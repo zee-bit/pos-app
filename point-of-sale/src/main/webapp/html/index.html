@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Cover Template · Bootstrap v4.6</title>
+
+    <script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/cover/">
+
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      html,
+      body {
+        height: 100%;
+        background-color: #333;
+      }
+
+      body {
+        display: -ms-flexbox;
+        display: flex;
+        color: #fff;
+        text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+        box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+      }
+
+      .cover-container {
+        max-width: 42em;
+      }
+
+
+      /*
+       * Header
+       */
+      .masthead {
+        margin-bottom: 2rem;
+      }
+
+      .masthead-brand {
+        margin-bottom: 0;
+      }
+
+      /*
+       * Cover
+       */
+      .cover {
+        padding: 0 1.5rem;
+      }
+      .cover .btn-lg {
+        padding: .75rem 1.25rem;
+        font-weight: 700;
+      }
+
+
+      /*
+       * Footer
+       */
+      .mastfoot {
+        color: rgba(255, 255, 255, .5);
+      }
+    </style>
+
+    
+</head>
+<body class="text-center">
+    
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="masthead mb-auto">
+    <div class="inner">
+      <h3 class="masthead-brand">PoS</h3>
+      <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link" th:href="@{/site/signup}">Signup</a>
+        <a class="nav-link" th:href="@{/site/login}">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main role="main" class="inner cover">
+    <h1 class="cover-heading">Point-of-Sale</h1>
+    <p class="lead">A POS or point of sale is a device that is used to process transactions by retail customers.
+      The software for POS devices, provides features that allow retailers to monitor inventory and buying trends,
+      create orders and track pricing accuracy.<br>
+      This POS application is developed by Zeeshan Equbal, as internship project for Increff, under the mentorship
+      of Akshit Mehta.
+    </p>
+    <p class="lead">
+      <a th:href="@{/site/login}" class="btn btn-lg btn-secondary">Login</a>
+    </p>
+  </main>
+
+  <footer class="mastfoot mt-auto">
+    <div class="inner">
+      Copyright Increff 2019
+      &nbsp;
+    </div>
+  </footer>
+</div>
+
+
+    
+  </body>
+</html>

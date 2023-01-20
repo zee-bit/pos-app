@@ -1,0 +1,230 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container mt-4">
+
+<!-- <h3>Orders</h3> -->
+<div class="row">
+	<h1 class="col my-auto">Orders</h1>
+	<div class="col d-flex justify-content-end">
+		<button type="button" class="btn btn-success px-4 m-2 shadow" id="add-order-button" th:if="${info.getRole() == 'supervisor'}">Add</button>
+		&nbsp;
+		<button type="button" class="btn btn-primary px-4 m-2 shadow" id="refresh-data">Refresh</button>
+	</div>
+</div>
+
+<!-- Orders Add Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="add-order-modal">
+	<div class="modal-dialog modal-xl" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title">Add Order</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+        <div class="modal-body">
+            <form class="container row justify-content-around" id="order-item-form">
+                <div class="form-group">
+					<label for="inputBarcode" class="col-form-label">Barcode</label>
+					<div class="">
+					<input type="text" class="form-control" name="barcode" id="inputBarcode" val="" placeholder=" Enter barcode" required />
+					</div>
+				</div>
+                <div class="form-group">
+					<label for="inputQuantity" class="col-form-label">Quantity</label>
+					<div class="">
+					<input type="number" class="form-control" min="0" name="quantity" id="inputQuantity" val="" placeholder="Enter quantity" required />
+					</div>
+				</div>
+                <div class="form-group">
+					<label for="inputSellingPrice" class="col-form-label">Selling Price (INR)</label>
+					<div class="">
+					<input type="number" class="form-control" name="sellingPrice" min="0" step="0.01" id="inputSellingPrice" val="" placeholder="Enter selling price" required />
+					</div>
+				</div>
+                <div class="form-group align-self-end">
+                    <button type="submit" class="btn btn-primary px-4 m-2 shadow" id="add-order-item">Add</button>
+                </div>
+            </form>
+            <div class="row justify-content-center mt-3">
+                <h3>Order Items</h3>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-striped css-serial" id="order-item-table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Sr. No</th>
+                            <th scope="col">Barcode</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Selling Price (INR)</th>
+                            <th scope="col">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                  
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success px-4 m-2 shadow" id="add-order">Place Order</button>
+        </div>
+	  </div>
+	</div>
+  </div>
+
+<!-- Blank Row -->
+<div class="row">
+	&nbsp;
+</div>
+<div class="row">
+
+ <!-- Table -->
+ <div class="col-12">
+	<table class="table table-striped css-serial" id="order-table">
+	  <thead>
+	    <tr>
+	      <th scope="col">Sr. No</th>
+	      <th scope="col">Order time</th>
+		  <th scope="col">Bill Amount (INR)</th>
+		  <th scope="col">Actions</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+
+	  </tbody>
+	</table>
+</div>
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="order-details-modal">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Order Details</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<!-- Display Order Id and Order Date -->
+				<div class="d-flex justify-content-between">
+					<div>
+						<strong>Order ID:</strong>
+						<p id="order-id"></p>
+					</div>
+					<div>
+						<strong>Order Time:</strong>
+						<p id="order-date"></p>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center">
+					<h4>Order Items</h4>
+				</div>
+				<table class="table table-striped css-serial mt-1" id="order-items-table">
+					<thead>
+						<tr>
+							<th scope="col">Sr. No</th>
+							<th scope="col">Product Name</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Selling Price (INR)</th>
+							<th scope="col">Total Price (INR)</th>
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
+				<div class="row justify-content-end mr-5">
+					<h5 class="font-weight-bold">Grand Total: </h5>
+					&nbsp;
+					<h5 id="grand-total"></h5>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary px-4 m-2" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Order Edit Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="order-edit-modal">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edit Order</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="container row justify-content-around" id="edit-order-item-form">
+					<div class="form-group">
+						<label for="inputEditBarcode" class="col-form-label">Barcode</label>
+						<div class="">
+							<input type="text" class="form-control" name="barcode" id="inputEditBarcode" val="" placeholder="Enter barcode" required />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputEditQuantity" class="col-form-label">Quantity</label>
+						<div class="">
+							<input type="number" min="0" class="form-control" name="quantity" id="inputEditQuantity" val="" placeholder="Enter quantity" required />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputEditSellingPrice" class="col-form-label">Selling Price (INR)</label>
+						<div class="">
+							<input type="number" class="form-control" name="sellingPrice" min="0" step="0.01" id="inputEditSellingPrice" val="" placeholder="Enter selling price" required />
+						</div>
+					</div>
+					<div class="form-group align-self-end">
+						<button type="button" class="btn btn-primary px-4 m-2 shadow" id="add-edit-order-item">Add</button>
+					</div>
+				</form>
+				<table class="table table-striped css-serial mt-1" id="edit-order-items-table">
+					<thead>
+					<tr>
+						<th scope="col">Sr. No</th>
+						<th scope="col">Barcode</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Selling Price (INR)</th>
+						<th scope="col">Action</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
+			</div>
+			<input type="hidden" name="id">
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary px-4 m-2" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-success px-4 m-2 shadow" id="update-order">Update Order</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/js/app.js}"/></script>
+<script th:src="@{/js/order.js}"/></script>
+
+</body>	
+
+</html>

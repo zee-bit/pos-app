@@ -1,0 +1,49 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container mt-4">
+
+    <h3>Users</h3>
+
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+
+        <!-- Table -->
+        <div class="col-12">
+            <table class="table table-striped css-serial" id="user-table">
+                <thead>
+                <tr>
+                    <th scope="col">Sr. No</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/js/user.js}" />
+</script>
+
+</body>
+
+</html>

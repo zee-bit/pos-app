@@ -1,0 +1,84 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container mt-4">
+
+  <h1>Sales Report</h1>
+
+  <!-- Top row with form-->
+  <div class="container">
+    <form id="sales-form">
+      <div class="row justify-content-center">
+        <div class="col-10 col-sm-5 form-group">
+          <label for="inputBrand" class="col-form-label">Brand</label>
+          <div class="">
+            <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter brand name" />
+          </div>
+        </div>
+        <div class="col-10 col-sm-5 form-group">
+          <label for="inputCategory" class="col-form-label">Category</label>
+          <div class="">
+            <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter category" />
+          </div>
+        </div>
+        <div class="col-10 col-sm-5 form-group">
+          <label for="inputStartDate" class="col-form-label">Start date</label>
+          <div class="">
+            <input type="date" class="form-control" name="startDate" id="inputStartDate" />
+          </div>
+        </div>
+        <div class="col-10 col-sm-5 form-group">
+          <label for="inputEndDate" class="col-form-label">End date</label>
+          <div class="">
+            <input type="date" class="form-control" name="endDate" id="inputEndDate" />
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center m-auto">
+        <button type="button" class="btn btn-success px-4 m-2 shadow" id="filter-sales-report">Filter</button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+  <div class="row">
+
+    <!-- Table -->
+    <div class="col-12">
+      <table class="table table-striped css-serial" id="sales-table">
+        <thead>
+        <tr>
+          <th scope="col">Sr. No</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Category</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Revenue (INR)</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/js/salesReport.js}"/></script>
+
+</body>
+
+</html>

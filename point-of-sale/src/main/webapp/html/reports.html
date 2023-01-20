@@ -1,0 +1,91 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container mt-4">
+
+
+  <div class="row">
+    <h1 class="col my-auto">Reports</h1>
+  </div>
+
+  <!-- Blank Row -->
+  <div class="row m-4">
+    &nbsp;
+  </div>
+<!--  <div class="row m-auto justify-content-center">-->
+<!--    <div class="col-3">-->
+<!--      <a th:href="@{/ui/reports/inventory}" class="">-->
+<!--        <i data-toggle="tooltip" title="Inventory report" class="fa fa-warehouse fa-5x"></i>-->
+<!--      </a>-->
+<!--      <p>Inventory report</p>-->
+<!--&lt;!&ndash;      <label>Inventory Report</label>&ndash;&gt;-->
+<!--    </div>-->
+<!--    <div class="col-3">-->
+<!--      <a th:href="@{/ui/reports/brand}" class="">-->
+<!--        <i data-toggle="tooltip" title="Brand-category report" class="fa fa-tag fa-5x"></i>-->
+<!--      </a>-->
+<!--      <p>Brand-category report</p>-->
+<!--&lt;!&ndash;      <label>Brand Category Report</label>&ndash;&gt;-->
+<!--    </div>-->
+<!--    <div class="col-3">-->
+<!--      <a th:href="@{/ui/reports/sales}" class="">-->
+<!--        <i data-toggle="tooltip" title="Sales report" class="fa fa-chart-line fa-5x"></i>-->
+<!--      </a>-->
+<!--      <p>Sales report</p>-->
+<!--&lt;!&ndash;      <label>Sales Report</label>&ndash;&gt;-->
+<!--    </div>-->
+<!--    <div class="col-3">-->
+<!--      <a th:href="@{/ui/reports/daily-sales}" class="">-->
+<!--        <i data-toggle="tooltip" title="Daily-Sales report" class="fa fa-pie-chart fa-5x"></i>-->
+<!--      </a>-->
+<!--      <p>Daily-Sales report</p>-->
+<!--      &lt;!&ndash;      <label>Sales Report</label>&ndash;&gt;-->
+<!--    </div>-->
+<!--  </div>-->
+  <div class="container-fluid">
+    <div class="row justify-content-around mb-2">
+      <a th:href="@{/ui/reports/sales}">
+        <figure class="col">
+            <img th:src="@{/static/reports/revenue.png}" alt="Sales report" class="" style="max-height: 15rem;">
+            <figcaption class="d-flex justify-content-center h4">Sales Report</figcaption>
+        </figure>
+      </a>
+      <a th:href="@{/ui/reports/daily-sales}">
+        <figure class="col">
+            <img th:src="@{/static/reports/revenue-1.png}" alt="Daily sales report" class="" style="max-height: 15rem;">
+            <figcaption class="d-flex justify-content-center h4">Daily Sales Report</figcaption>
+        </figure>
+      </a>
+    </div>
+    <div class="row justify-content-around mt-2">
+      <a th:href="@{/ui/reports/inventory}">
+        <figure class="col">
+            <img th:src="@{/static/reports/invenrory.png}" alt="Inventory report" class="" style="max-height: 15rem;">
+            <figcaption class="d-flex justify-content-center h4">Inventory Report</figcaption>
+        </figure>
+      </a>
+      <a th:href="@{/ui/reports/brand}">
+        <figure class="col">
+            <img th:src="@{/static/reports/brand.png}" alt="Brand report" class="" style="max-height: 15rem;">
+            <figcaption class="d-flex justify-content-center h4">Brand Report</figcaption>
+        </figure>
+      </a>
+    </div>
+  </div>
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+<script>$('#nav-report').addClass('active')</script>
+
+</body>
+
+</html>

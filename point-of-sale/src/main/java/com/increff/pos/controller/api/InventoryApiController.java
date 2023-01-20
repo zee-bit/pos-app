@@ -1,0 +1,39 @@
+package com.increff.pos.controller.api;
+
+import com.increff.pos.dto.InventoryDto;
+import com.increff.pos.model.data.InventoryData;
+import com.increff.pos.model.form.InventoryForm;
+import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.service.exception.ApiException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Api
+@RestController
+public class InventoryApiController {
+
+    @Autowired
+    InventoryDto dto;
+
+    @ApiOperation(value = "Gets an inventory by barcode")
+    @RequestMapping(path = "/api/inventory/{barcode}", method = RequestMethod.GET)
+    public InventoryData getByBarcode(@PathVariable String barcode) throws ApiException {
+        return dto.get(barcode);
+    }
+
+    @ApiOperation(value = "Gets list of all products in inventory")
+    @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
+    public List<InventoryData> getAll() throws ApiException {
+        return dto.getAll();
+    }
+
+    @ApiOperation(value = "Updates an inventory")
+    @RequestMapping(path = "/api/inventory", method = RequestMethod.PUT)
+    public InventoryData update(@RequestBody InventoryForm f) throws ApiException {
+        return dto.update(f);
+    }
+}
