@@ -22,7 +22,7 @@ public class ProductPojo {
     private String barcode;
     @Column(nullable = false)
     private String product;
-    @Column(nullable = false)
+    @Column(name = "brand_id", nullable = false)
     private Integer brandId;
     @Column(nullable = false)
     private Double price;

@@ -15,12 +15,16 @@ public class AppUiController extends AbstractUiController {
 
 	@RequestMapping(value = "")
 	public ModelAndView index() {
+		if (!infoData.getEmail().isEmpty()) {
+			return new ModelAndView("redirect:/ui/home");
+		}
+		infoData.setMessage("");
 		return mav("index.html");
 	}
 
 	@RequestMapping(value = "/site/login")
 	public ModelAndView login() {
-		if(infoData.getEmail() != "") {
+		if(!infoData.getEmail().isEmpty()) {
 			return new ModelAndView("redirect:/ui/home");
 		}
 		infoData.setMessage("");

@@ -36,10 +36,10 @@ public class FileUtil {
     }
 
     public static void createErrorFile(List<String> errorMsg) throws ApiException {
-        File dir = createDirectory("/home/zean/pos/errorFiles");
+        String errorDir = "/home/zean/pos/errorFiles";
 
         try {
-            FileWriter writer = new FileWriter(dir.getAbsolutePath() + File.separator + "error.txt");
+            FileWriter writer = new FileWriter(errorDir + File.separator + "error.txt");
             for (String error : errorMsg) {
                 writer.write(error + System.lineSeparator());
             }

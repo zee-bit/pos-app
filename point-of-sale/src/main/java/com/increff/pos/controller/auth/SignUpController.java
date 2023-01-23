@@ -26,6 +26,9 @@ public class SignUpController extends AbstractUiController {
 	@ApiOperation(value = "Display sign-up page")
 	@RequestMapping(path = "/site/signup", method = RequestMethod.GET)
 	public ModelAndView signUpPage() throws ApiException {
+		if (!info.getEmail().isEmpty()) {
+			return new ModelAndView("redirect:/ui/home");
+		}
 		info.setMessage("");
 		return mav("signup.html");
 	}

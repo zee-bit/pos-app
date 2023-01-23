@@ -21,7 +21,9 @@ public class OrderPojo {
     private Integer id;
 
     @CreationTimestamp
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @Column(name = "is_invoice_created")
     private Boolean isInvoiceCreated = false;
 }

@@ -12,7 +12,6 @@ import com.increff.pos.service.exception.ApiException;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.TimeUtil;
 import com.increff.pos.util.ConversionUtil;
-import org.apache.commons.collections.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -145,9 +144,9 @@ public class ReportDto {
     private DailySalesReportPojo setDailySalesReportPojo(Date date, Double revenue, Integer orderCount, Integer itemCount) {
         DailySalesReportPojo dailySalesReportPojo = new DailySalesReportPojo();
         dailySalesReportPojo.setDate(date);
-        dailySalesReportPojo.setTotal_revenue(revenue);
-        dailySalesReportPojo.setInvoiced_items_count(itemCount);
-        dailySalesReportPojo.setInvoiced_orders_count(orderCount);
+        dailySalesReportPojo.setTotalRevenue(revenue);
+        dailySalesReportPojo.setInvoicedItemsCount(itemCount);
+        dailySalesReportPojo.setInvoicedOrdersCount(orderCount);
         return dailySalesReportPojo;
     }
 
