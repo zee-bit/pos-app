@@ -32,19 +32,20 @@
 		</div>
         <div class="modal-body">
             <form class="container row justify-content-around" id="order-item-form">
-                <div class="form-group">
+                <div class="col form-group">
 					<label for="inputBarcode" class="col-form-label">Barcode</label>
 					<div class="">
-					<input type="text" class="form-control" name="barcode" id="inputBarcode" val="" placeholder=" Enter barcode" required />
+<!--					<input type="text" class="form-control" name="barcode" id="inputBarcode" val="" placeholder=" Enter barcode" required />-->
+						<select class="form-control" name="barcode" required="required" id="inputBarcode"></select>
 					</div>
 				</div>
-                <div class="form-group">
+                <div class="col form-group">
 					<label for="inputQuantity" class="col-form-label">Quantity</label>
 					<div class="">
 					<input type="number" class="form-control" min="0" name="quantity" id="inputQuantity" val="" placeholder="Enter quantity" required />
 					</div>
 				</div>
-                <div class="form-group">
+                <div class="col form-group">
 					<label for="inputSellingPrice" class="col-form-label">Selling Price (INR)</label>
 					<div class="">
 					<input type="number" class="form-control" name="sellingPrice" min="0" step="0.01" id="inputSellingPrice" val="" placeholder="Enter selling price" required />
@@ -161,7 +162,7 @@
 
 <!-- Order Edit Modal -->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="order-edit-modal">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Edit Order</h5>
@@ -171,19 +172,20 @@
 			</div>
 			<div class="modal-body">
 				<form class="container row justify-content-around" id="edit-order-item-form">
-					<div class="form-group">
+					<div class="col form-group">
 						<label for="inputEditBarcode" class="col-form-label">Barcode</label>
 						<div class="">
-							<input type="text" class="form-control" name="barcode" id="inputEditBarcode" val="" placeholder="Enter barcode" required />
+<!--							<input type="text" class="form-control" name="barcode" id="inputEditBarcode" val="" placeholder="Enter barcode" required />-->
+							<select class="form-control" name="barcode" required="required" id="inputEditBarcode"></select>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="col form-group">
 						<label for="inputEditQuantity" class="col-form-label">Quantity</label>
 						<div class="">
 							<input type="number" min="0" class="form-control" name="quantity" id="inputEditQuantity" val="" placeholder="Enter quantity" required />
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="col form-group">
 						<label for="inputEditSellingPrice" class="col-form-label">Selling Price (INR)</label>
 						<div class="">
 							<input type="number" class="form-control" name="sellingPrice" min="0" step="0.01" id="inputEditSellingPrice" val="" placeholder="Enter selling price" required />

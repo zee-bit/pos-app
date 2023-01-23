@@ -4,6 +4,11 @@ function getOrderUrl(){
 	return baseUrl + "/api/orders";
 }
 
+function getInventoryUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/inventory";
+}
+
 function getRole(){
 	var role = $("meta[name=role]").attr("content")
 	return role;
@@ -51,6 +56,38 @@ function getOrderList(){
 	   error: handleAjaxError
 	});
 }
+
+function populateBarcodeDropdown(formId) {
+    var url = getInventoryUrl();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (data) {
+            addDataToBarcodeDropdown(data, formId)
+        },
+        error: handleAjaxError
+    });
+}
+
+function addDataToBarcodeDropdown(data, formId) {
+	var $barcode = $(`${formId} select[name=barcode]`);
+	console.log($barcode);
+	$barcode.empty();
+
+	var barcodeDefaultOption = '<option value="">Select a barcode</option>';
+    $barcode.append(barcodeDefaultOption);
+
+	for (var i in data) {
+	  var e = data[i];
+	  var option =
+		'<option value="' +
+		e.barcode +
+		'">' +
+		e.barcode +
+		"</option>";
+	  $barcode.append(option);
+	}
+  }
 
 function displayCreateOrderItems(orderItems) {
     var $tbody = $('#order-item-table').find('tbody');
@@ -216,6 +253,7 @@ function displayEditOrderModal(id){
 	    orderItems = data.orderItems;
         $("#order-edit-modal").modal("toggle");
         $("#order-edit-modal input[name=id]").val(id);
+        populateBarcodeDropdown("#edit-order-item-form");
         displayEditOrder(orderItems);
 	   },
 	   error: handleAjaxError
@@ -274,6 +312,7 @@ function displayOrderDetailsInModal(data) {
 
 function displayAddModal() {
 	$('#add-order-modal').modal('toggle');
+	populateBarcodeDropdown("#order-item-form");
 }
 
 function onQuantityChanged(barcode) {
