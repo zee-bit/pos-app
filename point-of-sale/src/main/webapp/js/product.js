@@ -1,12 +1,12 @@
 
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/product";
+	return baseUrl + "/api/products";
 }
 
 function getBrandCategoryUrl() {
   var baseUrl = $("meta[name=baseUrl]").attr("content");
-  return baseUrl + "/api/brand";
+  return baseUrl + "/api/brands";
 }
 
 function getRole(){

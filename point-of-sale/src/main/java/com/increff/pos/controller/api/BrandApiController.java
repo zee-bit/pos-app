@@ -14,7 +14,7 @@ import java.util.List;
 
 @Api
 @RestController
-@RequestMapping("/api/brand")
+@RequestMapping("/api/brands")
 public class BrandApiController {
 
     @Autowired
