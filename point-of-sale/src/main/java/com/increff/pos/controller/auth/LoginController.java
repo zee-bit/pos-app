@@ -59,6 +59,7 @@ public class LoginController extends AbstractUiController {
 		// Attach Authentication object to the Security Context
 		SecurityUtil.setAuthentication(authentication);
 
+		info.setMessage("");
 		return new ModelAndView("redirect:/ui/home");
 	}
 

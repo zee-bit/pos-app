@@ -27,7 +27,7 @@ public class AdminApiDto {
 
     private void validateForm(UserForm userForm) throws ApiException {
         if (!StringUtil.isValidEmail(userForm.getEmail()))
-            throw new ApiException("Invalid email!");
+            throw new ApiException("Email is invalid. Please input a valid email!");
         if (StringUtil.isEmpty(userForm.getPassword()))
             throw new ApiException("Password cannot be empty!");
     }
