@@ -30,6 +30,10 @@ public class BrandService {
         return dao.selectAll();
     }
 
+    public List<BrandPojo> searchByBrandCategory(String brand, String category) {
+        return dao.searchByBrandCategory(brand, category);
+    }
+
     public List<BrandPojo> getByBrandAndCategory(String brand, String category) {
         if(brand.equals("") && category.equals("")) {
             return dao.selectAll();

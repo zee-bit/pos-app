@@ -12,11 +12,11 @@ import java.util.List;
 public class BrandDao extends AbstractDao {
     private String select_all = "select b from BrandPojo b";
     private String select_id = "select b from BrandPojo b where id=:id";
-    private String delete_id = "delete from BrandPojo b where id=:id";
     private String update_id = "update BrandPojo b set b.brand=:brand, b.category=:category where id=:id";
     private String select_br_cat = "select b from BrandPojo b where brand=:brand and category=:category";
     private String select_brand = "select b from BrandPojo b where brand=:brand";
     private String select_category = "select b from BrandPojo b where category=:category";
+    private String search = "select b from BrandPojo b where brand like :brand and category like :category";
 
     @Transactional
     public void insert(BrandPojo brandPojo) {
@@ -39,6 +39,13 @@ public class BrandDao extends AbstractDao {
         query.setParameter("brand", brand);
         query.setParameter("category", category);
         return getSingle(query);
+    }
+
+    public List<BrandPojo> searchByBrandCategory(String brand, String category) {
+        TypedQuery<BrandPojo> query = getQuery(search, BrandPojo.class);
+        query.setParameter("brand", brand+"%");
+        query.setParameter("category", category+"%");
+        return query.getResultList();
     }
 
     public List<BrandPojo> selectByBrand(String brand) {

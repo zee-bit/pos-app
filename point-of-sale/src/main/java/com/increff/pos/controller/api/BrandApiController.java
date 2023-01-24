@@ -37,6 +37,12 @@ public class BrandApiController {
         return dto.getAll();
     }
 
+    @ApiOperation(value = "Get list of filtered brands")
+    @RequestMapping(path = "/api/brand/search", method = RequestMethod.POST)
+    public List<BrandData> getFiltered(@RequestBody BrandForm form) {
+        return dto.getFilteredBrandCategory(form);
+    }
+
     @ApiOperation(value = "Updates a brand")
     @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
     public BrandData update(@PathVariable Integer id, @RequestBody BrandForm form) throws ApiException {

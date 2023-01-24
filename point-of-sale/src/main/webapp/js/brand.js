@@ -74,6 +74,24 @@ function getBrandList(){
 	});
 }
 
+function filterBrand() {
+    var $form = $("#brand-form");
+    var json = toJson($form);
+    var url = getBrandUrl() + "/search";
+
+    $.ajax({
+       url: url,
+       type: 'POST',
+       data: json,
+       headers: {
+        'Content-Type': 'application/json'
+       },
+       success: function(response) {
+            displayBrandList(response);
+       },
+       error: handleAjaxError
+    });
+}
 
 // FILE UPLOAD METHODS
 var fileData = [];
@@ -235,6 +253,7 @@ function init(){
     $('#nav-brand').addClass('active');
 	$('#brand-form').submit(addBrand);
 	$('#brand-edit-form').submit(updateBrand);
+	$('#filter-brand').click(filterBrand);
 	$('#refresh-data').click(getBrandList);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);

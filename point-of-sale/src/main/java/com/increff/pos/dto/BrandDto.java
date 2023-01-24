@@ -45,6 +45,17 @@ public class BrandDto {
         return list2;
     }
 
+    public List<BrandData> getFilteredBrandCategory(BrandForm form) {
+        setBrandForm(form);
+        normalize(form);
+        List<BrandPojo> list = service.searchByBrandCategory(form.getBrand(), form.getCategory());
+        List<BrandData> list2 = new ArrayList<BrandData>();
+        for (BrandPojo b : list) {
+            list2.add(ConversionUtil.getBrandData(b));
+        }
+        return list2;
+    }
+
     public BrandData update(Integer id, BrandForm f) throws ApiException {
         validateFields(f);
         normalize(f);
@@ -89,5 +100,14 @@ public class BrandDto {
     public void normalize(BrandForm brand) {
         brand.setBrand(StringUtil.toLowerCase(brand.getBrand()));
         brand.setCategory(StringUtil.toLowerCase(brand.getCategory()));
+    }
+
+    public void setBrandForm(BrandForm form) {
+        if (form.getBrand() == null) {
+            form.setBrand("");
+        }
+        if (form.getCategory() == null) {
+            form.setCategory("");
+        }
     }
 }
