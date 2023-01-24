@@ -35,7 +35,7 @@ function displayUserList(users) {
 //INITIALIZATION CODE
 function init() {
   $('#refresh-data').click(getUserList);
-  $('#nav-admin').addClass('active');
+  $('#nav-user').addClass('active');
 }
 
 $(document).ready(init);

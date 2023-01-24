@@ -32,10 +32,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="btn btn-primary mx-1" th:href="@{/site/signup}">Signup</a>
+        <a class="btn btn-primary mx-2 px-4" th:href="@{/site/signup}">Signup</a>
       </li>
       <li class="nav-item">
-        <a class="btn btn-primary" th:href="@{/site/login}">Login</a>
+        <a class="btn btn-primary mx-2 px-4" th:href="@{/site/login}">Login</a>
       </li>
     </ul>
   </div>
@@ -66,8 +66,14 @@
       <li class="nav-item" id="nav-order">
         <a class="nav-link" th:href="@{/ui/orders}">Order</a>
       </li>
-      <li class="nav-item" id="nav-report">
-        <a class="nav-link" th:href="@{/ui/reports}">Reports</a>
+      <li class="nav-item dropdown" id="nav-report">
+        <a class="nav-link dropdown-toggle" id="reports-link" th:href="@{/ui/reports}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+        <div class="dropdown-menu" aria-labelledby="reports-link">
+          <a class="dropdown-item" th:href="@{/ui/reports/inventory}">Inventory Report</a>
+          <a class="dropdown-item" th:href="@{/ui/reports/brand}">Brand Category Report</a>
+          <a class="dropdown-item" th:href="@{/ui/reports/sales}">Sales Report</a>
+          <a class="dropdown-item" th:href="@{/ui/reports/daily-sales}">Daily Sales Report</a>
+        </div>
       </li>
       <li class="nav-item" id="nav-user" th:if="${info.getRole() == 'supervisor'}">
         <a class="nav-link" th:href="@{/ui/users}">Users</a>
@@ -78,7 +84,7 @@
       <li class="navbar-text m-auto font-weight-bold">[[${info.getEmail()}]] <br>
         <span class="font-weight-normal d-flex justify-content-center">([[${info.getRole()}]])</span>
       </li>
-      <li class="nav-item">
+      <li class="nav-item align-self-center">
         <a class="nav-link" th:href="@{/session/logout}">
           <button class="btn btn-outline-danger mx-2 px-4">Logout</button>
         </a>
