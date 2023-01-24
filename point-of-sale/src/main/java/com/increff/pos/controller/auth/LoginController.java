@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.increff.pos.controller.ui.AbstractUiController;
 import com.increff.pos.service.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,7 +29,7 @@ import com.increff.pos.model.data.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-public class LoginController {
+public class LoginController extends AbstractUiController {
 
 	@Autowired
 	private UserService service;
@@ -39,10 +40,14 @@ public class LoginController {
 	@RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
 		UserPojo p = service.get(f.getEmail());
+		if(p == null) {
+			info.setMessage("Email does not exists. Signup first");
+			return mav("login.html");
+		}
 		boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
 		if (!authenticated) {
-			info.setMessage("Invalid username or password");
-			return new ModelAndView("redirect:/site/login");
+			info.setMessage("Password does not match. Try again!");
+			return mav("login.html");
 		}
 
 		// Create authentication object

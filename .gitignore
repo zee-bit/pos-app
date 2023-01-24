@@ -60,6 +60,7 @@ point-of-sale/.idea
 point-of-sale/jetty.log
 point-of-sale/target
 point-of-sale/bill.pdf
+point-of-sale/point-of-sale.iml
 invoice-app/log4j.properties
 invoice-app/invoice.properties
 invoice-app/.idea
@@ -67,3 +68,4 @@ invoice-app/jetty.log
 invoice-app/target
 invoice-app/bill.pdf
 invoice-app/resultPDF.pdf
+invoice-app/invoice-app.iml
