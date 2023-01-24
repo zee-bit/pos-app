@@ -14,37 +14,38 @@ import java.util.List;
 
 @Api
 @RestController
+@RequestMapping("/api/brand")
 public class BrandApiController {
 
     @Autowired
     private BrandDto dto;
 
     @ApiOperation(value = "Adds a new brand")
-    @RequestMapping(path = "/api/brand", method = RequestMethod.POST)
+    @RequestMapping(path = "", method = RequestMethod.POST)
     public BrandData add(@RequestBody BrandForm form) throws ApiException {
         return dto.add(form);
     }
 
     @ApiOperation(value = "Gets a brand by Id")
-    @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public BrandData get(@PathVariable Integer id) throws ApiException {
         return dto.get(id);
     }
 
     @ApiOperation(value = "Gets list of all brands")
-    @RequestMapping(path = "/api/brand", method = RequestMethod.GET)
+    @RequestMapping(path = "", method = RequestMethod.GET)
     public List<BrandData> getAll() {
         return dto.getAll();
     }
 
     @ApiOperation(value = "Get list of filtered brands")
-    @RequestMapping(path = "/api/brand/search", method = RequestMethod.POST)
+    @RequestMapping(path = "/search", method = RequestMethod.POST)
     public List<BrandData> getFiltered(@RequestBody BrandForm form) {
         return dto.getFilteredBrandCategory(form);
     }
 
     @ApiOperation(value = "Updates a brand")
-    @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public BrandData update(@PathVariable Integer id, @RequestBody BrandForm form) throws ApiException {
         return dto.update(id, form);
     }

@@ -16,37 +16,38 @@ import java.util.List;
 
 @Api
 @RestController
+@RequestMapping("/api/orders")
 public class OrderApiController {
 
     @Autowired
     private OrderDto dto;
 
     @ApiOperation(value = "Create a new Order")
-    @RequestMapping(path = "/api/orders", method = RequestMethod.POST)
+    @RequestMapping(path = "", method = RequestMethod.POST)
     public OrderDetailData add(@RequestBody List<OrderItemForm> orderItems) throws ApiException {
         return dto.addOrder(orderItems);
     }
 
     @ApiOperation(value = "Gets Order details by order id")
-    @RequestMapping(path = "/api/orders/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public OrderDetailData getOrderDetails(@PathVariable Integer id) throws ApiException {
         return dto.getOrderDetails(id);
     }
 
     @ApiOperation(value = "Gets list of all Orders")
-    @RequestMapping(path = "/api/orders", method = RequestMethod.GET)
+    @RequestMapping(path = "", method = RequestMethod.GET)
     public List<OrderData> getAll() throws ApiException {
         return dto.getAllOrders();
     }
 
     @ApiOperation(value = "Updates an Order")
-    @RequestMapping(path = "/api/orders/{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable Integer id, @RequestBody List<OrderItemForm> orderItems) throws ApiException {
         dto.updateOrder(id, orderItems);
     }
 
     @ApiOperation(value = "Updates invoice download status")
-    @RequestMapping(path = "/api/orders/invoice/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/invoice/{id}", method = RequestMethod.GET)
     public void invoiceDownloaded(@PathVariable Integer id) throws ApiException {
         dto.updateInvoiceStatus(id);
     }
