@@ -61,6 +61,7 @@ point-of-sale/jetty.log
 point-of-sale/target
 point-of-sale/bill.pdf
 point-of-sale/point-of-sale.iml
+point-of-sale/billDataXML.xml
 invoice-app/log4j.properties
 invoice-app/invoice.properties
 invoice-app/.idea
@@ -69,3 +70,4 @@ invoice-app/target
 invoice-app/bill.pdf
 invoice-app/resultPDF.pdf
 invoice-app/invoice-app.iml
+invoice-app/billDataXML.xml

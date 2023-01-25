@@ -49,20 +49,27 @@ public class OrderDto {
         OrderPojo orderPojo = orderService.createNewOrder();
         List<OrderItemPojo> orderItemPojoList = new ArrayList<OrderItemPojo>();
         List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
-        for (OrderItemForm orderItemForm : orderItemForms) {
+        updateInventory(orderPojo.getId(), orderItemForms, orderItemPojoList, orderItemDataList);
+
+        OrderData orderData = ConversionUtil.getOrderData(orderPojo, orderItemPojoList);
+        OrderDetailData orderDetailData = ConversionUtil.getOrderDetailsData(orderData, orderItemDataList);
+        generateInvoice(orderPojo.getId());
+        return orderDetailData;
+    }
+
+    public void updateInventory(
+            Integer orderId, List<OrderItemForm> orderItemFormList,
+            List<OrderItemPojo> orderItemPojoList, List<OrderItemData> orderItemDataList
+    ) throws ApiException {
+        for (OrderItemForm orderItemForm : orderItemFormList) {
             ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
-            OrderItemPojo orderItemPojo = ConversionUtil.getOrderItemPojo(orderItemForm, orderPojo.getId(), productPojo.getId());
+            OrderItemPojo orderItemPojo = ConversionUtil.getOrderItemPojo(orderItemForm, orderId, productPojo.getId());
             OrderItemData orderItemData = ConversionUtil.getOrderItemData(orderItemPojo, productPojo);
             orderItemPojoList.add(orderItemPojo);
             orderItemDataList.add(orderItemData);
             orderItemService.insert(orderItemPojo);
             inventoryService.reduce(orderItemForm.getBarcode(), orderItemPojo.getProductId(), orderItemPojo.getQuantity());
         }
-
-        OrderData orderData = ConversionUtil.getOrderData(orderPojo, orderItemPojoList);
-        OrderDetailData orderDetailData = ConversionUtil.getOrderDetailsData(orderData, orderItemDataList);
-        generateInvoice(orderPojo.getId());
-        return orderDetailData;
     }
 
     public OrderData get(Integer id) throws ApiException {
@@ -102,18 +109,13 @@ public class OrderDto {
         normalize(orderItemForms);
         revertInventory(orderId);
         OrderPojo orderPojo = orderService.getById(orderId);
-        List<OrderItemPojo> orderItemPojos = new ArrayList<>();
-        for (OrderItemForm orderItemForm : orderItemForms) {
-            ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
-
-            OrderItemPojo orderItemPojo = ConversionUtil.getOrderItemPojo(orderItemForm, orderPojo.getId(), productPojo.getId());
-            orderItemPojos.add(orderItemPojo);
-            inventoryService.reduce(orderItemForm.getBarcode(), orderItemPojo.getProductId(), orderItemPojo.getQuantity());
-        }
         orderItemService.deleteByOrderId(orderId);
-        orderItemService.insertMultiple(orderItemPojos);
+
+        List<OrderItemPojo> orderItemPojolist = new ArrayList<>();
+        List<OrderItemData> orderItemDataList = new ArrayList<>();
+        updateInventory(orderPojo.getId(), orderItemForms, orderItemPojolist, orderItemDataList);
         generateInvoice(orderPojo.getId());
-        return orderItemPojos;
+        return orderItemPojolist;
     }
 
     @Transactional(rollbackFor = ApiException.class)
