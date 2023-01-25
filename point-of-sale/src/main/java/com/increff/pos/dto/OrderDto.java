@@ -63,6 +63,10 @@ public class OrderDto {
     ) throws ApiException {
         for (OrderItemForm orderItemForm : orderItemFormList) {
             ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
+            if (productPojo.getPrice() < orderItemForm.getSellingPrice()) {
+                throw new ApiException(
+                        "Selling Price higher than MRP(INR "+ productPojo.getPrice() + " ) for " + orderItemForm.getBarcode());
+            }
             OrderItemPojo orderItemPojo = ConversionUtil.getOrderItemPojo(orderItemForm, orderId, productPojo.getId());
             OrderItemData orderItemData = ConversionUtil.getOrderItemData(orderItemPojo, productPojo);
             orderItemPojoList.add(orderItemPojo);

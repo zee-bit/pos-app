@@ -311,6 +311,8 @@ function displayOrderDetailsInModal(data) {
 }
 
 function displayAddModal() {
+    orderItems = [];
+    $('#order-item-table tbody tr').remove();
 	$('#add-order-modal').modal('toggle');
 	populateBarcodeDropdown("#order-item-form");
 }
