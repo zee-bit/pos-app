@@ -95,7 +95,7 @@ function processData(){
 		contentType: false,
 		processData: false,
 		success: function(res) {
-			$("#rowCount").text(res.rowCount);
+			$("#rowCount").text(res.totalCount);
             $("#processCount").text(res.successCount);
             $("#errorCount").text(res.errorCount);
             $.notify("Successfully updated inventory items!", 'success');
