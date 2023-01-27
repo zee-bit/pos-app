@@ -9,6 +9,7 @@ import com.increff.pos.model.form.SalesReportForm;
 import com.increff.pos.pojo.*;
 import com.increff.pos.service.*;
 import com.increff.pos.service.exception.ApiException;
+import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.TimeUtil;
 import com.increff.pos.util.ConversionUtil;
@@ -92,7 +93,7 @@ public class ReportDto {
     }
 
     public List<SalesReportData> getSalesReport(SalesReportForm salesReportForm) throws ApiException {
-        normalize(salesReportForm);
+        NormalizeUtil.normalizeSalesReport(salesReportForm);
         List<BrandPojo> brandPojoList = brandService.getByBrandAndCategory(salesReportForm.getBrand(), salesReportForm.getCategory());
         List<SalesReportData> salesReportDataList = initializeSalesReportData(brandPojoList);
         List<OrderItemPojo> orderItemPojoList = orderItemService.getAllOrderItemBetween(
@@ -126,19 +127,6 @@ public class ReportDto {
             dailySalesReportDataList.add(ConversionUtil.getDailySalesReportData(dailySalesReportPojo));
         }
         return dailySalesReportDataList;
-    }
-
-    public static void normalize(SalesReportForm salesReportForm) {
-        salesReportForm.setBrand(StringUtil.toLowerCase(salesReportForm.getBrand()));
-        salesReportForm.setCategory(StringUtil.toLowerCase(salesReportForm.getCategory()));
-        if(salesReportForm.getStartDate() == null) {
-            salesReportForm.setStartDate(new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime());
-        }
-        if(salesReportForm.getEndDate() == null) {
-            salesReportForm.setEndDate(new Date());
-        }
-        salesReportForm.setStartDate(TimeUtil.getStartOfDay(salesReportForm.getStartDate()));
-        salesReportForm.setEndDate(TimeUtil.getEndOfDay(salesReportForm.getEndDate()));
     }
 
     private DailySalesReportPojo setDailySalesReportPojo(Date date, Double revenue, Integer orderCount, Integer itemCount) {

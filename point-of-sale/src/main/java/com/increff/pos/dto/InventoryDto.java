@@ -9,6 +9,7 @@ import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.service.exception.ApiException;
+import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ConversionUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -47,7 +48,7 @@ public class InventoryDto {
 
     public InventoryData update(InventoryForm f) throws ApiException {
         validateFields(f);
-        normalize(f);
+        NormalizeUtil.normalizeInventory(f);
         ProductPojo productPojo = productService.getByBarcode(f.getBarcode());
         InventoryPojo inventoryPojo = ConversionUtil.getInventoryPojo(f, productPojo.getId());
         return ConversionUtil.getInventoryData(
@@ -88,9 +89,5 @@ public class InventoryDto {
         if (form.getQuantity() < 0) {
             throw new ApiException("Quantity cannot be negative");
         }
-    }
-
-    public void normalize(InventoryForm form) {
-        form.setBarcode(StringUtil.toLowerCase(form.getBarcode()));
     }
 }

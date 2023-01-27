@@ -7,6 +7,7 @@ import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.exception.ApiException;
 import com.increff.pos.service.BrandService;
+import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ConversionUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -26,7 +27,7 @@ public class BrandDto {
 
     public BrandData add(BrandForm form) throws ApiException {
         validateFields(form);
-        normalize(form);
+        NormalizeUtil.normalizeBrandCategory(form);
         BrandPojo brandPojo = ConversionUtil.getBrandPojo(form);
         return ConversionUtil.getBrandData(service.add(brandPojo));
     }
@@ -47,7 +48,7 @@ public class BrandDto {
 
     public List<BrandData> getFilteredBrandCategory(BrandForm form) {
         setBrandForm(form);
-        normalize(form);
+        NormalizeUtil.normalizeBrandCategory(form);
         List<BrandPojo> list = service.searchByBrandCategory(form.getBrand(), form.getCategory());
         List<BrandData> list2 = new ArrayList<BrandData>();
         for (BrandPojo b : list) {
@@ -58,7 +59,7 @@ public class BrandDto {
 
     public BrandData update(Integer id, BrandForm f) throws ApiException {
         validateFields(f);
-        normalize(f);
+        NormalizeUtil.normalizeBrandCategory(f);
         BrandPojo b = ConversionUtil.getBrandPojo(f);
         return ConversionUtil.getBrandData(service.update(id, b));
     }
@@ -95,11 +96,6 @@ public class BrandDto {
         if (StringUtil.isEmpty(form.getBrand()) || StringUtil.isEmpty(form.getCategory())) {
             throw new ApiException("Brand or Category cannot be empty.");
         }
-    }
-
-    public void normalize(BrandForm brand) {
-        brand.setBrand(StringUtil.toLowerCase(brand.getBrand()));
-        brand.setCategory(StringUtil.toLowerCase(brand.getCategory()));
     }
 
     public void setBrandForm(BrandForm form) {

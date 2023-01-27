@@ -12,6 +12,7 @@ import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.service.exception.ApiException;
 import com.increff.pos.util.FileUtil;
+import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ConversionUtil;
 import org.apache.commons.codec.binary.Base64;
@@ -45,7 +46,7 @@ public class OrderDto {
     @Transactional(rollbackFor = ApiException.class)
     public OrderDetailData addOrder(List<OrderItemForm> orderItemForms) throws ApiException {
         validateFields(orderItemForms);
-        normalize(orderItemForms);
+        NormalizeUtil.normalizeOrderItem(orderItemForms);
         OrderPojo orderPojo = orderService.createNewOrder();
         List<OrderItemPojo> orderItemPojoList = new ArrayList<OrderItemPojo>();
         List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
@@ -110,7 +111,7 @@ public class OrderDto {
     @Transactional(rollbackFor = ApiException.class)
     public List<OrderItemPojo> updateOrder(Integer orderId, List<OrderItemForm> orderItemForms) throws ApiException {
         validateFields(orderItemForms);
-        normalize(orderItemForms);
+        NormalizeUtil.normalizeOrderItem(orderItemForms);
         revertInventory(orderId);
         OrderPojo orderPojo = orderService.getById(orderId);
         orderItemService.deleteByOrderId(orderId);
@@ -141,12 +142,6 @@ public class OrderDto {
             if (orderItem.getSellingPrice() < 0) {
                 throw new ApiException("Selling Price cannot be less than 0");
             }
-        }
-    }
-
-    public void normalize(List<OrderItemForm> orderItemFormList) {
-        for (OrderItemForm orderItemForm : orderItemFormList) {
-            orderItemForm.setBarcode(StringUtil.toLowerCase(orderItemForm.getBarcode()));
         }
     }
 

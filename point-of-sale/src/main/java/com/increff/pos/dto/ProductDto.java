@@ -11,6 +11,7 @@ import com.increff.pos.service.BrandService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.service.exception.ApiException;
+import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ConversionUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -36,7 +37,7 @@ public class ProductDto {
     @Transactional(rollbackFor = ApiException.class)
     public ProductData add(ProductForm form) throws ApiException {
         validateFields(form);
-        normalize(form);
+        NormalizeUtil.normalizeProduct(form);
         BrandPojo brandPojo = brandService.getIfNameAndCategoryExists(form.getBrandName(), form.getBrandCategory());
         ProductPojo productPojo = ConversionUtil.getProductPojo(form, brandPojo.getId());
         productService.add(productPojo);
@@ -71,7 +72,7 @@ public class ProductDto {
 
     public ProductData update(Integer id, ProductForm form) throws ApiException {
         validateFields(form);
-        normalize(form);
+        NormalizeUtil.normalizeProduct(form);
         BrandPojo brandPojo = brandService.getIfNameAndCategoryExists(form.getBrandName(), form.getBrandCategory());
         ProductPojo productPojo = ConversionUtil.getProductPojo(form, brandPojo.getId());
         productPojo.setId(id);
@@ -116,12 +117,5 @@ public class ProductDto {
         if (form.getPrice() < 0) {
             throw new ApiException("Price cannot be negative");
         }
-    }
-
-    public void normalize(ProductForm form) {
-        form.setProduct(StringUtil.toLowerCase(form.getProduct()));
-        form.setBarcode(StringUtil.toLowerCase(form.getBarcode()));
-        form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));
-        form.setBrandCategory(StringUtil.toLowerCase(form.getBrandCategory()));
     }
 }
