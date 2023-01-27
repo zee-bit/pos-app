@@ -28,7 +28,7 @@ function displayDailySalesReport(data) {
         + '<td>' + convertTimeStampToDateTime(b.date) + '</td>'
         + '<td>' + b.orderCount + '</td>'
         + '<td>' + b.itemCount + '</td>'
-        + '<td>' + b.totalRevenue.toFixed(2) + '</td>'
+        + '<td class="text-right">' + numberWithCommas(b.totalRevenue.toFixed(2)) + '</td>'
         + '</tr>';
         $tbody.append(row);
     }

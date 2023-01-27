@@ -31,8 +31,8 @@ function displaySalesReport(data) {
         + '<td>&nbsp;</td>'
         + '<td>' + b.brand + '</td>'
         + '<td>' + b.category + '</td>'
-        + '<td>' + b.quantity + '</td>'
-        + '<td>' + b.revenue.toFixed(2) + '</td>'
+        + '<td>' + numberWithCommas(b.quantity) + '</td>'
+        + '<td class="text-right">' + numberWithCommas(b.revenue.toFixed(2)) + '</td>'
         + '</tr>';
         $tbody.append(row);
     }

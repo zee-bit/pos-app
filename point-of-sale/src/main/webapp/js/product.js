@@ -230,7 +230,7 @@ function displayProductList(data){
 		+ '<td>' + b.product + '</td>'
 		+ '<td>' + b.brandName + '</td>'
 		+ '<td>' + b.brandCategory + '</td>'
-		+ '<td>' + b.price.toFixed(2) + '</td>'
+		+ '<td class="text-right">' + numberWithCommas(b.price.toFixed(2)) + '</td>'
 		+ buttonHtml
 		+ '</tr>';
         $tbody.append(row);

@@ -172,7 +172,7 @@ function displayInventoryList(data){
 		var row = '<tr>'
 		+ '<td>' + b.product + '</td>'
 		+ '<td>' + b.barcode + '</td>'
-		+ '<td>' + b.quantity + '</td>'
+		+ '<td>' + numberWithCommas(b.quantity) + '</td>'
 		+ buttonHtml
 		+ '</tr>';
         $tbody.append(row);

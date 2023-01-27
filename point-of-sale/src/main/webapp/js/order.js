@@ -102,8 +102,8 @@ function displayCreateOrderItems(orderItems) {
         var row = '<tr>'
         + '<td>&nbsp;</td>'
         + '<td>' + e.barcode + '</td>'
-        + '<td>' + e.quantity + '</td>'
-        + '<td>' + e.sellingPrice.toFixed(2) + '</td>'
+        + '<td>' + numberWithCommas(e.quantity) + '</td>'
+        + '<td class="text-right">' + numberWithCommas(e.sellingPrice.toFixed(2)) + '</td>'
         + '<td>' + buttonHtml + '</td>'
         + '</tr>';
         $tbody.append(row);
@@ -181,7 +181,7 @@ function displayOrderList(data){
             var row = '<tr>'
             + '<td>&nbsp;</td>'
             + '<td>' + orderDateStr + '</td>'
-            + '<td>' + b.billAmount.toFixed(2) + '</td>'
+            + '<td class="text-right">' + numberWithCommas(b.billAmount.toFixed(2)) + '</td>'
             + '<td>' + buttonHtml + '</td>'
             + '</tr>';
         $tbody.append(row);
@@ -231,7 +231,7 @@ function displayEditOrder(data) {
                        onchange="onQuantityChanged('${e.barcode}')"
                        style="width:70%" min="1">
                    </td>
-                   <td>${e.sellingPrice.toFixed(2)}</td>
+                   <td class="text-right">${numberWithCommas(e.sellingPrice.toFixed(2))}</td>
                    <td>
                      <button type="button" onclick="deleteEditOrderItem('${e.barcode}')" data-toggle="tooltip"
                           data-placement="bottom" title="Delete" class="btn btn-outline-danger px-4 mx-2">
@@ -297,9 +297,9 @@ function displayOrderDetailsInModal(data) {
     const row = '<tr>'
         + '<td>&nbsp;</td>'
         + '<td>' + productName + '</td>'
-        + '<td>' + quantity + '</td>'
-        + '<td>' + sellingPrice.toFixed(2) + '</td>'
-        + '<td>' + totalPriceStr + '</td>'
+        + '<td>' + numberWithCommas(quantity) + '</td>'
+        + '<td class="text-right">' + numberWithCommas(sellingPrice.toFixed(2)) + '</td>'
+        + '<td class="text-right">' + numberWithCommas(totalPriceStr) + '</td>'
         + '</tr>';
     
     $orderItemsTable.find("tbody").append(row);
