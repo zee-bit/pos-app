@@ -1,12 +1,13 @@
 package com.increff.pos.utils;
 
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.model.data.OrderItemData;
 import com.increff.pos.model.form.*;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.ProductPojo;
+import com.increff.pos.pojo.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TestUtils {
@@ -73,6 +74,14 @@ public class TestUtils {
         return userForm;
     }
 
+    public static OrderData getOrderData(Integer id, Timestamp date, Double bill) {
+        OrderData orderData = new OrderData();
+        orderData.setId(id);
+        orderData.setCreatedAt(date);
+        orderData.setBillAmount(bill);
+        return orderData;
+    }
+
     public static SalesReportForm getSalesReportForm(String brand, String category) {
         SalesReportForm salesReportForm = new SalesReportForm();
         salesReportForm.setBrand(brand);
@@ -93,6 +102,22 @@ public class TestUtils {
         return orderItemFormList;
     }
 
+    public static List<OrderItemData> getOrderItemDataList(
+            List<Integer> orderIds, List<String> productNames, List<String> barcodes,
+            List<Integer> quantities, List<Double> sellingPriceList) {
+        List<OrderItemData> orderItemDataList = new ArrayList<>();
+        for(int i = 0; i < barcodes.size(); i++) {
+            OrderItemData orderItemData = new OrderItemData();
+            orderItemData.setOrderId(orderIds.get(i));
+            orderItemData.setBarcode(barcodes.get(i));
+            orderItemData.setQuantity(quantities.get(i));
+            orderItemData.setProductName(productNames.get(i));
+            orderItemData.setSellingPrice(sellingPriceList.get(i));
+            orderItemDataList.add(orderItemData);
+        }
+        return orderItemDataList;
+    }
+
     public static List<OrderItemPojo> getOrderItemPojoList(
             Integer orderId, List<ProductPojo> productPojoList, List<Integer> quantities, List<Double> sellingPriceList) {
         List<OrderItemPojo> orderItemPojoList = new ArrayList<>();
@@ -105,5 +130,14 @@ public class TestUtils {
             orderItemPojoList.add(orderItemPojo);
         }
         return orderItemPojoList;
+    }
+
+    public static DailySalesReportPojo getDailySalesReportPojo(Date date, Double revenue, Integer items, Integer orders) {
+        DailySalesReportPojo dailySalesReportPojo = new DailySalesReportPojo();
+        dailySalesReportPojo.setDate(date);
+        dailySalesReportPojo.setTotalRevenue(revenue);
+        dailySalesReportPojo.setInvoicedItemsCount(items);
+        dailySalesReportPojo.setInvoicedOrdersCount(orders);
+        return dailySalesReportPojo;
     }
 }

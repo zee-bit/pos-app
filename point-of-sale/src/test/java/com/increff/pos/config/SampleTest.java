@@ -1,4 +1,4 @@
-package com.increff.pos.service;
+package com.increff.pos.config;
 
 import static org.junit.Assert.assertNotNull;
 

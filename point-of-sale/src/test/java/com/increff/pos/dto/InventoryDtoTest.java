@@ -5,7 +5,7 @@ import com.increff.pos.model.form.InventoryForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.AbstractUnitTest;
+import com.increff.pos.config.AbstractUnitTest;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;

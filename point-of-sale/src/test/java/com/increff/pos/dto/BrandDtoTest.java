@@ -3,7 +3,7 @@ package com.increff.pos.dto;
 import com.increff.pos.model.data.BrandData;
 import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.service.AbstractUnitTest;
+import com.increff.pos.config.AbstractUnitTest;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.exception.ApiException;
 import com.increff.pos.utils.TestUtils;
@@ -64,6 +64,19 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandPojo newBrandPojo = brandService.getIfNameAndCategoryExists("nike", "shoes");
         List<BrandData> brandDataList = brandDto.getAll();
         assertEquals(2, brandDataList.size());
+    }
+
+    @Test
+    public void getFilteredBrandTest() throws ApiException {
+        BrandForm brandForm = TestUtils.getBrandForm("apple", "electronics");
+        BrandForm filteredBrandForm = TestUtils.getBrandForm("app", null);
+        BrandData brandData = brandDto.add(brandForm);
+        BrandPojo brandPojo = brandService.getIfNameAndCategoryExists("apple", "electronics");
+        List<BrandData> brandDataList = brandDto.getFilteredBrandCategory(filteredBrandForm);
+        assertEquals(1, brandDataList.size());
+        assertEquals(brandPojo.getId(), brandDataList.get(0).getId());
+        assertEquals(brandPojo.getBrand(), brandDataList.get(0).getBrand());
+        assertEquals(brandPojo.getCategory(), brandDataList.get(0).getCategory());
     }
 
     @Test

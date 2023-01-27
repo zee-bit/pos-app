@@ -3,7 +3,7 @@ package com.increff.pos.dto;
 import com.increff.pos.model.data.UserData;
 import com.increff.pos.model.form.UserForm;
 import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.service.AbstractUnitTest;
+import com.increff.pos.config.AbstractUnitTest;
 import com.increff.pos.service.UserService;
 import com.increff.pos.service.exception.ApiException;
 import com.increff.pos.utils.TestUtils;
@@ -53,7 +53,7 @@ public class AdminDtoTest extends AbstractUnitTest {
     public void invalidEmailTest() throws ApiException {
         UserForm userForm = TestUtils.getUserForm("admin", "abcd");
         exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("Invalid email!");
+        exceptionRule.expectMessage("Email is invalid. Please input a valid email!");
         adminApiDto.add(userForm);
     }
 

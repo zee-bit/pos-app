@@ -65,11 +65,6 @@ public class UserService {
         return dao.selectAll();
     }
 
-    @Transactional
-    public void delete(int id) throws ApiException {
-        dao.delete(id);
-    }
-
     private static void normalizeUser(UserPojo user) {
         user.setEmail(StringUtil.toLowerCase(user.getEmail()));
         user.setRole(StringUtil.toLowerCase(user.getRole()));

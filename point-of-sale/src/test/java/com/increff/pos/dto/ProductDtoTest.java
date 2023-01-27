@@ -1,11 +1,10 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.model.data.ProductData;
-import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.model.form.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.AbstractUnitTest;
+import com.increff.pos.config.AbstractUnitTest;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.service.exception.ApiException;
@@ -77,20 +76,20 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void addProductNullBarcodeTest() throws ApiException {
+    public void addProductNullFieldsTest() throws ApiException {
         ProductForm productForm = TestUtils.getProductForm(
-                "Bhujiya", null, " Haldirams ", "  Electronics", 9.99);
+                null, null, " Haldirams ", "  Electronics", 9.99);
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("None of the fields can be empty");
         productDto.add(productForm);
     }
 
     @Test
-    public void addProductNullFieldsTest() throws ApiException {
+    public void addProductInvalidFieldsTest() throws ApiException {
         ProductForm productForm = TestUtils.getProductForm(
-                null, "ba123", " Haldirams ", "  Food", null);
+                "bhujiya", "ba123", " Haldirams ", "  Food", -12.3);
         exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("None of the fields can be empty");
+        exceptionRule.expectMessage("Price cannot be negative");
         productDto.add(productForm);
     }
 

@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.config.AbstractUnitTest;
 import com.increff.pos.model.data.BrandData;
 import com.increff.pos.model.data.DailySalesReportData;
 import com.increff.pos.model.data.InventoryReportData;
