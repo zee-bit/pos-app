@@ -5,8 +5,10 @@ import com.increff.pos.model.data.OrderDetailData;
 import com.increff.pos.model.form.*;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.config.AbstractUnitTest;
+import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.exception.ApiException;
 import com.increff.pos.utils.TestUtils;
+import org.hibernate.criterion.Order;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -143,5 +145,18 @@ public class OrderDtoTest extends AbstractUnitTest {
         assertEquals((Double)13999.00, updatedOrderItemPojoList.get(0).getSellingPrice());
         assertEquals((Integer)5, updatedOrderItemPojoList.get(1).getQuantity());
         assertEquals((Double)10999.00, updatedOrderItemPojoList.get(1).getSellingPrice());
+    }
+
+    @Test
+    public void updateInvoiceStatusTest() throws ApiException {
+        List<OrderItemForm> orderItemFormList = new ArrayList<OrderItemForm>();
+        OrderItemForm orderItemForm = TestUtils.getOrderItemForm("NK123", 1, 13999.00);
+        orderItemFormList.add(orderItemForm);
+        orderItemForm = TestUtils.getOrderItemForm("NK321", 2, 10999.00);
+        orderItemFormList.add(orderItemForm);
+        OrderDetailData orderDetailData = orderDto.addOrder(orderItemFormList);
+        orderDto.updateInvoiceStatus(orderDetailData.getId());
+        OrderData orderData = orderDto.get(orderDetailData.getId());
+        assertEquals(true, orderData.getIsInvoiceCreated());
     }
 }

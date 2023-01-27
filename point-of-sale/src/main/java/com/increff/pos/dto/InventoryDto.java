@@ -67,6 +67,7 @@ public class InventoryDto {
                     .build()
                     .parse();
 
+            progress.setTotalCount(formList.size());
             for (InventoryForm form : formList) {
                 try {
                     update(form);

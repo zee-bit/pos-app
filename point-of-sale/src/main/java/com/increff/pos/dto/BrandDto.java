@@ -74,6 +74,7 @@ public class BrandDto {
                     .build()
                     .parse();
 
+            progress.setTotalCount(formList.size());
             for (BrandForm form : formList) {
                 try {
                     add(form);

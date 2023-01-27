@@ -1,6 +1,7 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.model.data.InventoryData;
+import com.increff.pos.model.data.UploadProgressData;
 import com.increff.pos.model.form.InventoryForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
@@ -17,6 +18,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -86,5 +89,14 @@ public class InventoryDtoTest extends AbstractUnitTest {
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("Quantity cannot be negative");
         InventoryData inventoryData = inventoryDto.update(inventoryForm);
+    }
+
+    @Test
+    public void addBrandFromFile() throws IOException {
+        FileReader file = new FileReader("testFiles/inventory.tsv");
+        UploadProgressData uploadProgressData = inventoryDto.addInventoryFromFile(file);
+        assertEquals((Integer) 2, uploadProgressData.getTotalCount());
+        assertEquals((Integer) 2, uploadProgressData.getSuccessCount());
+        assertEquals((Integer) 0, uploadProgressData.getErrorCount());
     }
 }

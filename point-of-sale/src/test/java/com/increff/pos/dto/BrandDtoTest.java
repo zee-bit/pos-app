@@ -1,6 +1,7 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.model.data.BrandData;
+import com.increff.pos.model.data.UploadProgressData;
 import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.config.AbstractUnitTest;
@@ -12,6 +13,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -84,8 +88,8 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm BrandForm = TestUtils.getBrandForm("nike", "shoes");
         brandDto.add(BrandForm);
         exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("Brand with given ID does not exist, id: 5");
-        brandDto.get(5);
+        exceptionRule.expectMessage("Brand with given ID does not exist, id: 10");
+        brandDto.get(10);
     }
 
     @Test
@@ -97,5 +101,14 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandData updatedBrandData = brandDto.get(brandData.getId());
         assertEquals("dell", updatedBrandData.getBrand());
         assertEquals("electronics", updatedBrandData.getCategory());
+    }
+
+    @Test
+    public void addBrandFromFile() throws IOException {
+        FileReader file = new FileReader("testFiles/brand.tsv");
+        UploadProgressData uploadProgressData = brandDto.addBrandCategoryFromFile(file);
+        assertEquals((Integer) 3, uploadProgressData.getTotalCount());
+        assertEquals((Integer) 3, uploadProgressData.getSuccessCount());
+        assertEquals((Integer) 0, uploadProgressData.getErrorCount());
     }
 }

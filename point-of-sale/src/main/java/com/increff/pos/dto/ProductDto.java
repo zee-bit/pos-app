@@ -91,6 +91,7 @@ public class ProductDto {
                     .build()
                     .parse();
 
+            progress.setTotalCount(formList.size());
             for (ProductForm form : formList) {
                 try {
                     add(form);

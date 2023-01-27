@@ -1,6 +1,7 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.model.data.ProductData;
+import com.increff.pos.model.data.UploadProgressData;
 import com.increff.pos.model.form.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -15,6 +16,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -169,5 +172,14 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals(pojo.getPrice(), updatedData.getPrice());
         assertEquals(brandPojo.getBrand(), updatedData.getBrandName());
         assertEquals(brandPojo.getCategory(), updatedData.getBrandCategory());
+    }
+
+    @Test
+    public void addProductFromFile() throws IOException {
+        FileReader file = new FileReader("testFiles/product.tsv");
+        UploadProgressData uploadProgressData = productDto.addProductFromFile(file);
+        assertEquals((Integer) 4, uploadProgressData.getTotalCount());
+        assertEquals((Integer) 2, uploadProgressData.getSuccessCount());
+        assertEquals((Integer) 2, uploadProgressData.getErrorCount());
     }
 }
