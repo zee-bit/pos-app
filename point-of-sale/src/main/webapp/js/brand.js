@@ -26,6 +26,7 @@ function addBrand(event){
 	   success: function(response) {
 	   		getBrandList();
 			$form.trigger("reset");
+			$('#add-brand-modal').modal('toggle');
 			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify("Brand successfully created!", 'success');
 	   },

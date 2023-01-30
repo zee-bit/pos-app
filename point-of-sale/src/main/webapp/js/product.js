@@ -40,6 +40,7 @@ function addProduct(event){
 	   success: function(response) {
 	   		getProductList();
 			$form.trigger("reset");
+			$('#add-product-modal').modal('toggle');
 			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify("Product successfully added!", 'success');
 	   },
@@ -50,7 +51,6 @@ function addProduct(event){
 }
 
 function updateProduct(event){
-	$('#edit-product-modal').modal('toggle');
 	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();
 	var url = getProductUrl() + "/" + id;
@@ -73,6 +73,7 @@ function updateProduct(event){
        },	   
 	   success: function(response) {
 	   		getProductList();
+	   		$('#edit-product-modal').modal('toggle');
 	   		$('.notifyjs-wrapper').trigger('notify-hide');
 	   		$.notify("Product successfully edited!", 'success');
 	   },

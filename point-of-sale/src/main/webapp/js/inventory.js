@@ -52,6 +52,7 @@ function updateInventory(event){
        },	   
 	   success: function(response) {
 	   		getInventoryList();
+	   		$('#edit-inventory-modal').modal('toggle');
 	   		$('.notifyjs-wrapper').trigger('notify-hide');
 	   		$.notify("Successfully updated inventory!", 'success');
 	   },
