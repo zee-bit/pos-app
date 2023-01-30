@@ -35,7 +35,6 @@ function addBrand(event){
 }
 
 function updateBrand(event){
-	$('#edit-brand-modal').modal('toggle');
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();
 	var url = getBrandUrl() + "/" + id;
@@ -54,6 +53,7 @@ function updateBrand(event){
 	   success: function(response) {
 	   		getBrandList();
 	   		$.notify("Brand successfully edited!", 'success');
+	   		$('#edit-brand-modal').modal('toggle');
 	   },
 	   error: handleAjaxError
 	});
