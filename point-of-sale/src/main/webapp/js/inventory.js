@@ -52,6 +52,7 @@ function updateInventory(event){
        },	   
 	   success: function(response) {
 	   		getInventoryList();
+	   		$('.notifyjs-wrapper').trigger('notify-hide');
 	   		$.notify("Successfully updated inventory!", 'success');
 	   },
 	   error: handleAjaxError
@@ -83,6 +84,7 @@ var processCount = 0;
 function processData(){
 	var file = $('#inventoryFile')[0].files[0];
 	if (!file) {
+	    $('.notifyjs-wrapper').trigger('notify-hide');
         $.notify('No file selected', 'error');
         return;
     }
@@ -105,10 +107,12 @@ function processData(){
             if (res.errorCount > 0) {
                 $('#download-errors').show();
             }
+            $('.notifyjs-wrapper').trigger('notify-hide');
             $.notify("Successfully updated inventory items!", 'success');
 		},
 		error: function(res) {
 			console.log("error: "+ res.responseText);
+			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify(res.responseJSON.message, 'error');
 		}
 	})

@@ -26,6 +26,7 @@ function addBrand(event){
 	   success: function(response) {
 	   		getBrandList();
 			$form.trigger("reset");
+			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify("Brand successfully created!", 'success');
 	   },
 	   error: handleAjaxError
@@ -52,6 +53,7 @@ function updateBrand(event){
        },	   
 	   success: function(response) {
 	   		getBrandList();
+	   		$('.notifyjs-wrapper').trigger('notify-hide');
 	   		$.notify("Brand successfully edited!", 'success');
 	   		$('#edit-brand-modal').modal('toggle');
 	   },
@@ -102,6 +104,7 @@ var processCount = 0;
 function processData(){
 	var file = $('#brandFile')[0].files[0];
 	if (!file) {
+	    $('.notifyjs-wrapper').trigger('notify-hide');
 	    $.notify('No file selected', 'error');
 	    return;
 	}
@@ -124,10 +127,12 @@ function processData(){
 			if (res.errorCount > 0) {
 			    $('#download-errors').show();
 			}
+			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify("Successfully uploaded all valid brand-categories!", 'success');
 		},
 		error: function(res) {
 			console.log(res.responseText);
+			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify(res.responseJSON.message, 'error');
 		}
 	})

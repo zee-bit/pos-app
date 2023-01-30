@@ -40,6 +40,7 @@ function addProduct(event){
 	   success: function(response) {
 	   		getProductList();
 			$form.trigger("reset");
+			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify("Product successfully added!", 'success');
 	   },
 	   error: handleAjaxError
@@ -72,6 +73,7 @@ function updateProduct(event){
        },	   
 	   success: function(response) {
 	   		getProductList();
+	   		$('.notifyjs-wrapper').trigger('notify-hide');
 	   		$.notify("Product successfully edited!", 'success');
 	   },
 	   error: handleAjaxError
@@ -102,6 +104,7 @@ var processCount = 0;
 function processData(){
 	var file = $('#productFile')[0].files[0];
 	if (!file) {
+	    $('.notifyjs-wrapper').trigger('notify-hide');
         $.notify('No file selected', 'error');
         return;
     }
@@ -127,6 +130,7 @@ function processData(){
 		},
 		error: function(res) {
 			console.log("error: "+ res.responseText);
+			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify(res.responseJSON.message, 'error');
 		}
 	})

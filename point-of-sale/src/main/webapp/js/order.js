@@ -37,6 +37,7 @@ function updateOrder(event){
        },
        success: function(response) {
             $('#order-edit-modal').modal('toggle');
+            $('.notifyjs-wrapper').trigger('notify-hide');
             $.notify("Order successfully edited!", 'success');
             getOrderList();
        },
@@ -375,6 +376,7 @@ function placeOrder(json) {
     },
     success: function(response) {
       $('#add-order-modal').modal('toggle');
+      $('.notifyjs-wrapper').trigger('notify-hide');
       $.notify("Order successfully placed!", 'success');
       getOrderList();
     },
@@ -406,6 +408,7 @@ function downloadInvoice(id) {
   
     req.onload = function (event) {
       var blob = req.response;
+      $('.notifyjs-wrapper').trigger('notify-hide');
       $.notify("Invoice generated!", "success");
       var link=document.createElement('a');
       link.href=window.URL.createObjectURL(blob);
