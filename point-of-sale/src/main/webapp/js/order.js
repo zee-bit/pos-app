@@ -17,13 +17,24 @@ function getRole(){
 //BUTTON ACTIONS
 
 function updateOrder(event){
+    var ok = true;
 	const data = orderItems.map((it) => {
-            return {
-              barcode: it.barcode,
-              quantity: it.quantity,
-              sellingPrice: it.sellingPrice,
-            };
-          });
+	    console.log(it.quantity);
+        if(isNaN(it.quantity)) {
+            $.notify("Quantity cannot be empty", "error");
+            ok = false;
+        }
+        if(isNaN(it.sellingPrice)) {
+            $.notify("Selling Price cannot be empty", "error");
+            ok = false;
+        }
+        return {
+          barcode: it.barcode,
+          quantity: it.quantity,
+          sellingPrice: it.sellingPrice,
+        };
+      });
+    if(!ok) return;
     //	var json = toJson($form);
     const json = JSON.stringify(data);
     var id = $("#order-edit-modal input[name=id]").val();
@@ -96,17 +107,48 @@ function displayCreateOrderItems(orderItems) {
 
     for(var i in orderItems) {
         var e = orderItems[i];
-        var buttonHtml = `<button class="btn btn-outline-danger px-4 mx-2" data-toggle="tooltip"
-          title="Delete item" onclick="deleteOrderItem(\'${e.barcode}\')">
-            <i class="fa fa-trash fa-lg"></i>
-          </button>`
-        var row = '<tr>'
-        + '<td>&nbsp;</td>'
-        + '<td>' + e.barcode + '</td>'
-        + '<td>' + numberWithCommas(e.quantity) + '</td>'
-        + '<td class="text-right">' + numberWithCommas(e.sellingPrice.toFixed(2)) + '</td>'
-        + '<td>' + buttonHtml + '</td>'
-        + '</tr>';
+        const row = `
+         <tr>
+               <td>&nbsp;</td>
+               <td>${e.barcode}</td>
+               <td>
+                    <input
+                      id="order-item-${e.barcode}"
+                      type="number"
+                      class="form-control quantityData"
+                      value="${e.quantity}"
+                      onchange="onQuantityChanged('${e.barcode}')"
+                      style="width:70%" min="1">
+               </td>
+               <td>
+                    <input
+                      id="order-item-sp-${e.barcode}"
+                      type="number"
+                      class="form-control sellingPriceData"
+                      value="${e.sellingPrice}"
+                      onchange="onSellingPriceChanged('${e.barcode}')"
+                      style="width:70%" min="0" step="0.01">
+               </td>
+               <td>
+                     <button class="btn btn-outline-danger px-4 mx-2" data-toggle="tooltip"
+                       title="Delete item" onclick="deleteOrderItem(\'${e.barcode}\')">
+                         <i class="fa fa-trash fa-lg"></i>
+                     </button>
+               </td>
+             </tr>
+           `;
+
+//        var buttonHtml = `<button class="btn btn-outline-danger px-4 mx-2" data-toggle="tooltip"
+//          title="Delete item" onclick="deleteOrderItem(\'${e.barcode}\')">
+//            <i class="fa fa-trash fa-lg"></i>
+//          </button>`
+//        var row = '<tr>'
+//        + '<td>&nbsp;</td>'
+//        + '<td>' + e.barcode + '</td>'
+//        + '<td>' + numberWithCommas(e.quantity) + '</td>'
+//        + '<td class="text-right">' + numberWithCommas(e.sellingPrice.toFixed(2)) + '</td>'
+//        + '<td>' + buttonHtml + '</td>'
+//        + '</tr>';
         $tbody.append(row);
     }
 }
@@ -232,7 +274,15 @@ function displayEditOrder(data) {
                        onchange="onQuantityChanged('${e.barcode}')"
                        style="width:70%" min="1">
                    </td>
-                   <td class="text-right">${numberWithCommas(e.sellingPrice.toFixed(2))}</td>
+                   <td>
+                        <input
+                          id="order-item-sp-${e.barcode}"
+                          type="number"
+                          class="form-control sellingPriceData"
+                          value="${e.sellingPrice}"
+                          onchange="onSellingPriceChanged('${e.barcode}')"
+                          style="width:70%" min="0" step="0.01">
+                   </td>
                    <td>
                      <button type="button" onclick="deleteEditOrderItem('${e.barcode}')" data-toggle="tooltip"
                           data-placement="bottom" title="Delete" class="btn btn-outline-danger px-4 mx-2">
@@ -325,6 +375,13 @@ function onQuantityChanged(barcode) {
   orderItems[index].quantity = Number.parseInt(newQuantity);
 }
 
+function onSellingPriceChanged(barcode) {
+  const index = orderItems.findIndex((it) => it.barcode === barcode);
+  if (index == -1) return;
+  const newSellingPrice = $(`#order-item-sp-${barcode}`).val();
+  orderItems[index].sellingPrice = Number.parseFloat(newSellingPrice);
+}
+
 function getCurrentEditOrderItem() {
   return {
     barcode: $('#inputEditBarcode').val(),
@@ -350,14 +407,23 @@ $(document).ready(getOrderList);
 
 // Place Order
 function placeNewOrder() {
+    var ok = true;
     const data = orderItems.map((it) => {
+      if(isNaN(it.quantity)) {
+          $.notify("Quantity cannot be empty", "error");
+          ok = false;
+      }
+      if(isNaN(it.sellingPrice)) {
+          $.notify("Selling Price cannot be empty", "error");
+          ok = false;
+      }
       return {
         barcode: it.barcode,
         quantity: it.quantity,
         sellingPrice: it.sellingPrice
       };
     });
-  
+    if(!ok) return;
     const json = JSON.stringify(data);
     placeOrder(json);
   }
