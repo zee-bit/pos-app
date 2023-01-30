@@ -163,10 +163,11 @@
       </div>
       
       <div class="modal-body">
-      	<div class="product-file">
+      	<div class="product-file col-12">
 		  <input type="file" class="custom-file-input" id="productFile" name="file">
 		  <label class="custom-file-label" for="productFile" id="productFileName">Choose file</label>
 		</div>
+		<br>
 		<a th:href="@{/sample/product.tsv}" target="_blank">Download Sample</a>
 		<br>
 		Rows: <span id="rowCount">0</span>, 

@@ -88,7 +88,7 @@ function numberWithCommas(x) {
 }
 
 var arrayInputNumber = document.querySelectorAll("input[type=number]");
-arrayInputNumber.forEach( () => addEventListener("keypress", function (evt) {
+arrayInputNumber.forEach( (input) => input.addEventListener("keypress", function (evt) {
     if (evt.which != 8 && evt.which != 0 && evt.which != 46 && evt.which < 48 || evt.which > 57) {
         evt.preventDefault();
     }

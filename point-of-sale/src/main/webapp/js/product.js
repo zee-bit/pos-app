@@ -101,6 +101,10 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#productFile')[0].files[0];
+	if (!file) {
+        $.notify('No file selected', 'error');
+        return;
+    }
 	// readFileData(file, readFileDataCallback);
 	url = "/pos/upload/file"
 	var data = new FormData();
@@ -117,9 +121,13 @@ function processData(){
 			$("#rowCount").text(res.totalCount);
             $("#processCount").text(res.successCount);
             $("#errorCount").text(res.errorCount);
+            if (res.errorCount > 0) {
+                $('#download-errors').show();
+            }
 		},
 		error: function(res) {
 			console.log("error: "+ res.responseText);
+			$.notify(res.responseJSON.message, 'error');
 		}
 	})
 }
@@ -277,7 +285,8 @@ function updateFileName(){
 }
 
 function displayUploadData(){
- 	resetUploadDialog(); 	
+ 	resetUploadDialog();
+ 	$('#download-errors').hide();
 	$('#upload-product-modal').modal('toggle');
 }
 

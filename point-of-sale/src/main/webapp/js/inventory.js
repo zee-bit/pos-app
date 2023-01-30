@@ -82,6 +82,10 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#inventoryFile')[0].files[0];
+	if (!file) {
+        $.notify('No file selected', 'error');
+        return;
+    }
 	// readFileData(file, readFileDataCallback);
 	url = "/pos/upload/file"
 	var data = new FormData();
@@ -98,10 +102,14 @@ function processData(){
 			$("#rowCount").text(res.totalCount);
             $("#processCount").text(res.successCount);
             $("#errorCount").text(res.errorCount);
+            if (res.errorCount > 0) {
+                $('#download-errors').show();
+            }
             $.notify("Successfully updated inventory items!", 'success');
 		},
 		error: function(res) {
 			console.log("error: "+ res.responseText);
+			$.notify(res.responseJSON.message, 'error');
 		}
 	})
 }
@@ -217,7 +225,8 @@ function updateFileName(){
 }
 
 function displayUploadData(){
- 	resetUploadDialog(); 	
+ 	resetUploadDialog();
+ 	$('#download-errors').hide();
 	$('#upload-inventory-modal').modal('toggle');
 }
 
