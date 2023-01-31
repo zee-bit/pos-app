@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.increff.pos.model.data.InventoryData;
 import com.increff.pos.model.data.UploadProgressData;
 import com.increff.pos.model.form.InventoryForm;
+import com.increff.pos.model.form.InventorySearchForm;
+import com.increff.pos.model.form.ProductSearchForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.InventoryService;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class InventoryDto {
@@ -38,6 +41,21 @@ public class InventoryDto {
 
     public List<InventoryData> getAll() throws ApiException {
         List<InventoryPojo> list = inventoryService.getAll();
+        List<InventoryData> list2 = new ArrayList<InventoryData>();
+        for (InventoryPojo i : list) {
+            ProductPojo p = productService.getIfExists(i.getProductId());
+            list2.add(ConversionUtil.getInventoryData(i, p.getProduct(), p.getBarcode()));
+        }
+        return list2;
+    }
+
+    public List<InventoryData> searchInventory(InventorySearchForm form) throws ApiException {
+        ProductSearchForm productSearchForm = ConversionUtil.getInventorySearchFormFromProductSearchForm(form);
+        List<ProductPojo> productMasterPojoList = productService.searchProductData(productSearchForm);
+        List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+        // filter according to product id list
+        List<InventoryPojo> list = inventoryService.getAll().stream()
+                .filter(o -> (productIds.contains(o.getProductId()))).collect(Collectors.toList());
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for (InventoryPojo i : list) {
             ProductPojo p = productService.getIfExists(i.getProductId());

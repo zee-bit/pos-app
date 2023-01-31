@@ -2,7 +2,10 @@ package com.increff.pos.controller.api;
 
 import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.model.data.InventoryData;
+import com.increff.pos.model.data.ProductData;
 import com.increff.pos.model.form.InventoryForm;
+import com.increff.pos.model.form.InventorySearchForm;
+import com.increff.pos.model.form.ProductSearchForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.service.exception.ApiException;
 import io.swagger.annotations.Api;
@@ -30,6 +33,12 @@ public class InventoryApiController {
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<InventoryData> getAll() throws ApiException {
         return dto.getAll();
+    }
+
+    @ApiOperation(value = "Get list of filtered inventory items")
+    @RequestMapping(path = "/search", method = RequestMethod.POST)
+    public List<InventoryData> searchInventory(@RequestBody InventorySearchForm form) throws ApiException {
+        return dto.searchInventory(form);
     }
 
     @ApiOperation(value = "Updates an inventory")

@@ -54,7 +54,6 @@ function filterProduct() {
     var $form = $("#filter-product-form");
     var json = toJson($form);
     var url = getProductUrl() + "/search";
-    console.log(json);
 
     $.ajax({
        url: url,

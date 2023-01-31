@@ -33,6 +33,25 @@ function addInventory(event){
 	return false;
 }
 
+function filterInventory() {
+    var $form = $("#filter-inventory-form");
+    var json = toJson($form);
+    var url = getInventoryUrl() + "/search";
+
+    $.ajax({
+       url: url,
+       type: 'POST',
+       data: json,
+       headers: {
+        'Content-Type': 'application/json'
+       },
+       success: function(response) {
+            displayInventoryList(response);
+       },
+       error: handleAjaxError
+    });
+}
+
 function updateInventory(event){
 	$('#edit-inventory-modal').modal('toggle');
 	//Get the ID
@@ -247,6 +266,7 @@ function displayInventory(data){
 function init(){
 	$('#nav-inventory').addClass('active');
 	$('#add-inventory').click(addInventory);
+	$('#filter-inventory').click(filterInventory);
 	$('#inventory-edit-form').submit(updateInventory);
 	$('#refresh-data').click(getInventoryList);
 	$('#upload-data').click(displayUploadData);

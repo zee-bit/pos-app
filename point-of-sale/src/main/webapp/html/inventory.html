@@ -10,15 +10,44 @@
 
 <div class="container mt-4">
 
-    
-    <div class="row">
-        <h1 class="col my-auto">Inventory</h1>
-        <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-primary shadow px-4 m-2" id="refresh-data">Refresh</button>
-            &nbsp;
-            <button type="button" class="btn btn-info shadow px-4 m-2" id="upload-data" th:if="${info.getRole() == 'supervisor'}">Upload</button>
-        </div>
+    <h1>Inventory</h1>
+
+    <div class="container">
+        <form id="filter-inventory-form">
+            <div class="row justify-content-center">
+                <div class="col-10 col-sm-5 form-group">
+                    <label class="col-form-label">Product Name</label>
+                    <div class="">
+                        <input type="text" class="form-control" name="product" placeholder="Enter product name" required />
+                    </div>
+                </div>
+                <div class="col-10 col-md form-group">
+                    <label class="col-form-label">Barcode</label>
+                    <div class="">
+                        <input type="text" class="form-control" name="barcode" placeholder="Enter barcode" required />
+                    </div>
+                </div>
+                <div class="col-10 d-flex justify-content-center col-sm-2 align-self-center mt-3 pt-1">
+                    <div class="">
+                        <button type="button" class="btn btn-secondary px-4 mx-2 shadow" id="filter-inventory">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center m-auto" th:if="${info.getRole() == 'supervisor'}">
+                <button type="button" class="btn btn-primary px-4 m-2 shadow" id="refresh-data">Refresh</button>
+                &nbsp;
+                <button type="button" class="btn btn-info px-4 m-2 shadow" id="upload-data">Upload</button>
+            </div>
+        </form>
     </div>
+<!--    <div class="row">-->
+<!--        <h1 class="col my-auto">Inventory</h1>-->
+<!--        <div class="col d-flex justify-content-end">-->
+<!--            <button type="button" class="btn btn-primary shadow px-4 m-2" id="refresh-data">Refresh</button>-->
+<!--            &nbsp;-->
+<!--            <button type="button" class="btn btn-info shadow px-4 m-2" id="upload-data" th:if="${info.getRole() == 'supervisor'}">Upload</button>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <!-- Blank Row -->
     <div class="row">

@@ -150,4 +150,11 @@ public class ConversionUtil {
         brandForm.setCategory(form.getCategory());
         return brandForm;
     }
+
+    public static ProductSearchForm getInventorySearchFormFromProductSearchForm(InventorySearchForm form) {
+        ProductSearchForm productSearchForm = new ProductSearchForm();
+        productSearchForm.setBarcode(form.getBarcode());
+        productSearchForm.setName(form.getProduct());
+        return productSearchForm;
+    }
 }
