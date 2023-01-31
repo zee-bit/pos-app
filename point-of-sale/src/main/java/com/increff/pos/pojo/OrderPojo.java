@@ -26,4 +26,7 @@ public class OrderPojo {
 
     @Column(name = "is_invoice_created")
     private Boolean isInvoiceCreated = false;
+
+    @Column(name = "invoice_path")
+    private String invoicePath;
 }

@@ -54,7 +54,8 @@ public class OrderDto {
 
         OrderData orderData = ConversionUtil.getOrderData(orderPojo, orderItemPojoList);
         OrderDetailData orderDetailData = ConversionUtil.getOrderDetailsData(orderData, orderItemDataList);
-        generateInvoice(orderPojo.getId());
+        String invoicePath = generateInvoice(orderPojo.getId());
+        orderPojo.setInvoicePath(invoicePath);
         return orderDetailData;
     }
 
@@ -118,7 +119,8 @@ public class OrderDto {
         List<OrderItemPojo> orderItemPojolist = new ArrayList<>();
         List<OrderItemData> orderItemDataList = new ArrayList<>();
         updateInventory(orderPojo.getId(), orderItemForms, orderItemPojolist, orderItemDataList);
-        generateInvoice(orderPojo.getId());
+        String invoicePath = generateInvoice(orderPojo.getId());
+        orderPojo.setInvoicePath(invoicePath);
         return orderItemPojolist;
     }
 
@@ -144,7 +146,7 @@ public class OrderDto {
         }
     }
 
-    public void generateInvoice(Integer orderId) throws ApiException {
+    public String generateInvoice(Integer orderId) throws ApiException {
         OrderDetailData orderDetailData = getOrderDetails(orderId);
         String base64Str = restTemplate.postForObject(INVOICE_APP_URL, orderDetailData, String.class);
 
@@ -158,6 +160,7 @@ public class OrderDto {
             outputStream.flush();
             outputStream.getFD().sync();
             outputStream.close();
+            return bill.getAbsolutePath();
         }
         catch (IOException e) {
             throw new ApiException("Order cannot be placed due to server issues. Please try again");
