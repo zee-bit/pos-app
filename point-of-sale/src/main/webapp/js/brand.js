@@ -105,6 +105,7 @@ var processCount = 0;
 function processData(){
 	var file = $('#brandFile')[0].files[0];
 	if (!file) {
+	    $.notify.defaults( {clickToHide:true,autoHide:false} );
 	    $('.notifyjs-wrapper').trigger('notify-hide');
 	    $.notify('No file selected', 'error');
 	    return;
@@ -133,6 +134,7 @@ function processData(){
 		},
 		error: function(res) {
 			console.log(res.responseText);
+			$.notify.defaults( {clickToHide:true,autoHide:false} );
 			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify(res.responseJSON.message, 'error');
 		}

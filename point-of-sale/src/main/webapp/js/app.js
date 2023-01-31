@@ -14,6 +14,7 @@ function toJson($form){
 
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
+	$.notify.defaults( {clickToHide:true,autoHide:false} );
 	$('.notifyjs-wrapper').trigger('notify-hide');
 	$.notify(response.message, 'error');
 }

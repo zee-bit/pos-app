@@ -21,10 +21,14 @@ function updateOrder(event){
 	const data = orderItems.map((it) => {
 	    console.log(it.quantity);
         if(isNaN(it.quantity)) {
+            $.notify.defaults( {clickToHide:true,autoHide:false} );
+            $('.notifyjs-wrapper').trigger('notify-hide');
             $.notify("Quantity cannot be empty", "error");
             ok = false;
         }
         if(isNaN(it.sellingPrice)) {
+            $.notify.defaults( {clickToHide:true,autoHide:false} );
+            $('.notifyjs-wrapper').trigger('notify-hide');
             $.notify("Selling Price cannot be empty", "error");
             ok = false;
         }
@@ -410,10 +414,14 @@ function placeNewOrder() {
     var ok = true;
     const data = orderItems.map((it) => {
       if(isNaN(it.quantity)) {
+          $.notify.defaults( {clickToHide:true,autoHide:false} );
+          $('.notifyjs-wrapper').trigger('notify-hide');
           $.notify("Quantity cannot be empty", "error");
           ok = false;
       }
       if(isNaN(it.sellingPrice)) {
+          $.notify.defaults( {clickToHide:true,autoHide:false} );
+          $('.notifyjs-wrapper').trigger('notify-hide');
           $.notify("Selling Price cannot be empty", "error");
           ok = false;
       }
