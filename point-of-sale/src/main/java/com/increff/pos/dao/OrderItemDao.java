@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public class OrderItemDao extends AbstractDao {
 
-    private String select_all = "select oi from OrderItemPojo oi";
     private String select_id = "select oi from OrderItemPojo oi where orderId=:orderId";
 
     @Transactional
@@ -18,24 +17,10 @@ public class OrderItemDao extends AbstractDao {
         em.persist(orderItemPojo);
     }
 
-    public OrderItemPojo select(Integer id) {
-        return em.find(OrderItemPojo.class, id);
-    }
-
-    public List<OrderItemPojo> selectAll() {
-        TypedQuery<OrderItemPojo> query = getQuery(select_all, OrderItemPojo.class);
-        return query.getResultList();
-    }
-
     public List<OrderItemPojo> selectByOrderId(Integer orderId) {
         TypedQuery<OrderItemPojo> query = getQuery(select_id, OrderItemPojo.class);
         query.setParameter("orderId", orderId);
         return query.getResultList();
-    }
-
-    @Transactional
-    public void update(OrderItemPojo p) {
-        em.merge(p);
     }
 
     @Transactional

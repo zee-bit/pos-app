@@ -64,13 +64,4 @@ public class BrandDao extends AbstractDao {
         // Update using EM method
         em.merge(brandPojo);
     }
-
-    public void updateUsingHql(BrandPojo brandPojo) {
-        // Update using HQL query
-        Query query = em.createQuery(update_id);
-        query.setParameter("brand", brandPojo.getBrand());
-        query.setParameter("category", brandPojo.getCategory());
-        query.setParameter("id", brandPojo.getId());
-        query.executeUpdate();
-    }
 }
