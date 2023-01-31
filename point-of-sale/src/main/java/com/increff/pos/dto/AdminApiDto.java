@@ -30,6 +30,10 @@ public class AdminApiDto {
             throw new ApiException("Email is invalid. Please input a valid email!");
         if (StringUtil.isEmpty(userForm.getPassword()))
             throw new ApiException("Password cannot be empty!");
+        if (StringUtil.isEmpty(userForm.getConfirmPassword()))
+            throw new ApiException("Confirm password cannot be empty!");
+        if (userForm.getPassword() != userForm.getConfirmPassword())
+            throw new ApiException("Password does not match!");
     }
 
     public List<UserData> getAll() {

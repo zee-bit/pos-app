@@ -19,19 +19,26 @@
 						Signup to PoS application
 					</div>
 					<div class="card-body">
-						<form class="form" id="init-form" method="POST" th:action="@{/site/signup}">
+						<form class="form" onSubmit="return checkPassword(this)" id="init-form" method="POST" th:action="@{/site/signup}">
 							<div class="form-group">
 								<label for="email" class="col-sm-10 col-form-label">Email</label>
 								<div class="col">
 									<input type="email" class="form-control" name="email" id="email"
-										placeholder="enter email">
+										placeholder="enter email" required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="password" class="col-sm-10 col-form-label">Password</label>
 								<div class="col">
 									<input type="password" class="form-control" name="password" id="password"
-										placeholder="password">
+										placeholder="password" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="confirm-password" class="col-sm-10 col-form-label">Confirm Password</label>
+								<div class="col">
+									<input type="password" class="form-control" name="confirmPassword" id="confirm-password"
+										   placeholder="password" required>
 								</div>
 							</div>
 							<div class="row justify-content-center">
@@ -55,6 +62,7 @@
 
 	<footer th:replace="snippets.html :: name_footer"></footer>
 
+	<script th:src="@{/js/signup.js}"/></script>
 </body>
 
 </html>

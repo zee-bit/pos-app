@@ -9,5 +9,6 @@ public class UserForm {
 
     private String email;
     private String password;
+    private String confirmPassword;
     private String role;
 }
