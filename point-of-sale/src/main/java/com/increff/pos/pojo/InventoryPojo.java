@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@Table(name = "inventories")
+@Table(name = "inventory")
 public class InventoryPojo {
 
     @Id

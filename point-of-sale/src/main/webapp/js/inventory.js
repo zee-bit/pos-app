@@ -53,7 +53,6 @@ function filterInventory() {
 }
 
 function updateInventory(event){
-	$('#edit-inventory-modal').modal('toggle');
 	//Get the ID
 	var barcode = $("#inventory-edit-form input[name=barcode]").val();
 	var url = getInventoryUrl();
