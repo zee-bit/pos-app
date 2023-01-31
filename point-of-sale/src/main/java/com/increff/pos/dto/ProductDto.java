@@ -44,10 +44,7 @@ public class ProductDto {
         BrandPojo brandPojo = brandService.getIfNameAndCategoryExists(form.getBrandName(), form.getBrandCategory());
         ProductPojo productPojo = ConversionUtil.getProductPojo(form, brandPojo.getId());
         productService.add(productPojo);
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo.setQuantity(0);
-        inventoryPojo.setProductId(productPojo.getId());
-        inventoryService.add(inventoryPojo);
+        inventoryService.initialize(productPojo.getId());
         return ConversionUtil.getProductData(productPojo, brandPojo.getBrand(), brandPojo.getCategory());
     }
 

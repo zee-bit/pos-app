@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BrandDto {
@@ -38,23 +39,17 @@ public class BrandDto {
     }
 
     public List<BrandData> getAll() {
-        List<BrandPojo> list = service.getAll();
-        List<BrandData> list2 = new ArrayList<BrandData>();
-        for (BrandPojo b : list) {
-            list2.add(ConversionUtil.getBrandData(b));
-        }
-        return list2;
+        return service.getAll()
+                .stream()
+                .map(obj -> ConversionUtil.getBrandData(obj))
+                .collect(Collectors.toList());
     }
 
     public List<BrandData> getFilteredBrandCategory(BrandForm form) {
         setBrandForm(form);
         NormalizeUtil.normalizeBrandCategory(form);
         List<BrandPojo> list = service.searchByBrandCategory(form.getBrand(), form.getCategory());
-        List<BrandData> list2 = new ArrayList<BrandData>();
-        for (BrandPojo b : list) {
-            list2.add(ConversionUtil.getBrandData(b));
-        }
-        return list2;
+        return list.stream().map(obj -> ConversionUtil.getBrandData(obj)).collect(Collectors.toList());
     }
 
     public BrandData update(Integer id, BrandForm f) throws ApiException {

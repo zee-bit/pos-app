@@ -40,6 +40,14 @@ public class InventoryService {
         return inventoryPojo;
     }
 
+    @Transactional(rollbackOn = ApiException.class)
+    public void initialize(Integer productId) throws ApiException {
+        InventoryPojo inventoryPojo = new InventoryPojo();
+        inventoryPojo.setQuantity(0);
+        inventoryPojo.setProductId(productId);
+        dao.insert(inventoryPojo);
+    }
+
     // Reduce inventory quantity
     @Transactional(rollbackOn = ApiException.class)
     public void reduce(String barcode, Integer productId, Integer quantity) throws ApiException {

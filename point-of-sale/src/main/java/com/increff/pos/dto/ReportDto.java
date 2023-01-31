@@ -101,6 +101,13 @@ public class ReportDto {
         List<ProductPojo> productPojoList = getProductListFromOrderItems(orderItemPojoList);
 
         // Calculate quantity and revenue for salesReportData
+        return calculateQuantityAndRevenue(brandPojoList, productPojoList, orderItemPojoList);
+    }
+
+    public List<SalesReportData> calculateQuantityAndRevenue(
+            List<BrandPojo> brandPojoList, List<ProductPojo> productPojoList, List<OrderItemPojo> orderItemPojoList
+    ) {
+        List<SalesReportData> salesReportDataList = initializeSalesReportData(brandPojoList);
         for (OrderItemPojo orderItem : orderItemPojoList) {
             int productId = orderItem.getProductId();
             ProductPojo product = productPojoList.stream().filter(p -> p.getId() == productId).findFirst().get();
@@ -116,7 +123,6 @@ public class ReportDto {
                 }
             }
         }
-
         return salesReportDataList;
     }
 

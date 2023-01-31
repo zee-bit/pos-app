@@ -35,11 +35,6 @@ public class OrderService {
         return dao.selectAll();
     }
 
-    @Transactional(rollbackOn  = ApiException.class)
-    public OrderPojo update(OrderPojo orderPojo) throws ApiException {
-        return dao.update(orderPojo);
-    }
-
     public List<OrderPojo> getAllBetween(Date startingDate, Date endingDate) {
         return dao.selectAllBetween(startingDate, endingDate);
     }

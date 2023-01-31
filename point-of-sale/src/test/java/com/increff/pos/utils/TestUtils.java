@@ -67,10 +67,11 @@ public class TestUtils {
         return orderItemForm;
     }
 
-    public static UserForm getUserForm(String email, String password) {
+    public static UserForm getUserForm(String email, String password, String confirmPassword) {
         UserForm userForm = new UserForm();
         userForm.setEmail(email);
         userForm.setPassword(password);
+        userForm.setConfirmPassword(confirmPassword);
         return userForm;
     }
 

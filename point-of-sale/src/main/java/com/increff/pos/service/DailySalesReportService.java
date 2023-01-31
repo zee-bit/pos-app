@@ -25,8 +25,4 @@ public class DailySalesReportService {
     public List<DailySalesReportPojo> getAll() {
         return dao.selectAll();
     }
-
-    public List<DailySalesReportPojo> getAllBetween(Date startingDate, Date endingDate) {
-        return dao.selectAllBetween(startingDate, endingDate);
-    }
 }

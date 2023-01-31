@@ -102,8 +102,7 @@ public class OrderDto {
         List<OrderData> orderDatas = new ArrayList<OrderData>();
         for (OrderPojo orderPojo : orderPojos) {
             List<OrderItemPojo> orderItemPojos = orderItemService.get(orderPojo.getId());
-            OrderData orderData = ConversionUtil.getOrderData(orderPojo, orderItemPojos);
-            orderDatas.add(orderData);
+            orderDatas.add(ConversionUtil.getOrderData(orderPojo, orderItemPojos));
         }
         return orderDatas;
     }

@@ -28,7 +28,7 @@ public class AdminDtoTest extends AbstractUnitTest {
 
     @Test
     public void addSupervisorTest() throws ApiException {
-        UserForm userForm = TestUtils.getUserForm("zeeshan@increff.com","abcdef");
+        UserForm userForm = TestUtils.getUserForm("zeeshan@increff.com","abcdef", "abcdef");
         adminApiDto.add(userForm);
         List<UserData> list = adminApiDto.getAll();
         List<UserPojo> pojos = userService.getAll();
@@ -40,7 +40,7 @@ public class AdminDtoTest extends AbstractUnitTest {
 
     @Test
     public void addOperatorTest() throws ApiException {
-        UserForm userForm = TestUtils.getUserForm("operator1@increff.com","xyz");
+        UserForm userForm = TestUtils.getUserForm("operator1@increff.com","xyz", "xyz");
         adminApiDto.add(userForm);
         List<UserData> list = adminApiDto.getAll();
         List<UserPojo> pojos = userService.getAll();
@@ -51,7 +51,7 @@ public class AdminDtoTest extends AbstractUnitTest {
 
     @Test
     public void invalidEmailTest() throws ApiException {
-        UserForm userForm = TestUtils.getUserForm("admin", "abcd");
+        UserForm userForm = TestUtils.getUserForm("admin", "abcd", "abcd");
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("Email is invalid. Please input a valid email!");
         adminApiDto.add(userForm);
@@ -59,9 +59,9 @@ public class AdminDtoTest extends AbstractUnitTest {
 
     @Test
     public void invalidPasswordTest() throws ApiException {
-        UserForm userForm = TestUtils.getUserForm("admin@xyz.com", "");
+        UserForm userForm = TestUtils.getUserForm("admin@xyz.com", "assdc", "abcde");
         exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("Password cannot be empty!");
+        exceptionRule.expectMessage("Password does not match!");
         adminApiDto.add(userForm);
     }
 }
