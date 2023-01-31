@@ -78,7 +78,7 @@ function getBrandList(){
 }
 
 function filterBrand() {
-    var $form = $("#brand-form");
+    var $form = $("#filter-brand-form");
     var json = toJson($form);
     var url = getBrandUrl() + "/search";
 
@@ -262,11 +262,15 @@ function displayBrand(data){
 	$('#edit-brand-modal').modal('toggle');
 }
 
+function displayAddModal() {
+	$('#add-brand-modal').modal('toggle');
+}
 
 //INITIALIZATION CODE
 function init(){
     $('#nav-brand').addClass('active');
 	$('#brand-form').submit(addBrand);
+	$('#add-brand-button').click(displayAddModal);
 	$('#brand-edit-form').submit(updateBrand);
 	$('#filter-brand').click(filterBrand);
 	$('#refresh-data').click(getBrandList);
