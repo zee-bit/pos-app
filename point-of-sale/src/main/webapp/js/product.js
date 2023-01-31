@@ -50,6 +50,26 @@ function addProduct(event){
 	return false;
 }
 
+function filterProduct() {
+    var $form = $("#filter-product-form");
+    var json = toJson($form);
+    var url = getProductUrl() + "/search";
+    console.log(json);
+
+    $.ajax({
+       url: url,
+       type: 'POST',
+       data: json,
+       headers: {
+        'Content-Type': 'application/json'
+       },
+       success: function(response) {
+            displayProductList(response);
+       },
+       error: handleAjaxError
+    });
+}
+
 function updateProduct(event){
 	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();
@@ -315,6 +335,7 @@ function displayAddModal() {
 function init(){
 	$('#nav-product').addClass('active');
 	$('#product-form').submit(addProduct);
+	$('#filter-product').click(filterProduct);
 	$('#add-product-button').click(displayAddModal);
 	$('#update-product').click(updateProduct);
 	$('#refresh-data').click(getProductList);

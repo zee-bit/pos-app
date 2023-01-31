@@ -13,6 +13,7 @@ public class ProductDao extends AbstractDao {
     private String select_id = "select p from ProductPojo p where id=:id";
     private String select_barcode = "select p from ProductPojo p where barcode=:barcode";
     private String select_brand_id = "select p from ProductPojo p where brandId=:brandId";
+    private String search_product = "select p from ProductPojo p where product like :product and barcode like :barcode";
 
     @Transactional
     public void insert(ProductPojo productPojo) {
@@ -39,6 +40,13 @@ public class ProductDao extends AbstractDao {
     public List<ProductPojo> selectByBrandId(Integer brandId) {
         TypedQuery<ProductPojo> query = getQuery(select_brand_id, ProductPojo.class);
         query.setParameter("brandId", brandId);
+        return query.getResultList();
+    }
+
+    public List<ProductPojo> searchProductData(String barcode, String name) {
+        TypedQuery<ProductPojo> query = getQuery(search_product, ProductPojo.class);
+        query.setParameter("barcode", barcode + "%");
+        query.setParameter("product", "%" + name + "%");
         return query.getResultList();
     }
 

@@ -1,8 +1,11 @@
 package com.increff.pos.controller.api;
 
 import com.increff.pos.dto.ProductDto;
+import com.increff.pos.model.data.BrandData;
 import com.increff.pos.model.data.ProductData;
+import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.model.form.ProductForm;
+import com.increff.pos.model.form.ProductSearchForm;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.exception.ApiException;
 import io.swagger.annotations.Api;
@@ -42,6 +45,12 @@ public class ProductApiController {
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<ProductData> getAll() throws ApiException {
         return dto.getAll();
+    }
+
+    @ApiOperation(value = "Get list of filtered products")
+    @RequestMapping(path = "/search", method = RequestMethod.POST)
+    public List<ProductData> searchProduct(@RequestBody ProductSearchForm form) throws ApiException {
+        return dto.searchProduct(form);
     }
 
     @ApiOperation(value = "Updates a product")

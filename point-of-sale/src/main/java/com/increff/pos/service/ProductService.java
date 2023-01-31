@@ -1,8 +1,10 @@
 package com.increff.pos.service;
 
 import com.increff.pos.dao.ProductDao;
+import com.increff.pos.model.form.ProductSearchForm;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.exception.ApiException;
+import com.increff.pos.util.NormalizeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,11 @@ public class ProductService {
 
     public List<ProductPojo> getByBrandCategoryId(Integer brandId) {
         return dao.selectByBrandId(brandId);
+    }
+
+    public List<ProductPojo> searchProductData(ProductSearchForm f) {
+        NormalizeUtil.normalizeProductSearch(f);
+        return dao.searchProductData(f.getBarcode(), f.getName());
     }
 
     @Transactional(rollbackOn  = ApiException.class)

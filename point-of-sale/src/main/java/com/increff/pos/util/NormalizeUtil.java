@@ -36,6 +36,13 @@ public class NormalizeUtil {
         form.setBrandCategory(StringUtil.toLowerCase(form.getBrandCategory()));
     }
 
+    public static void normalizeProductSearch(ProductSearchForm form) {
+        form.setName(StringUtil.toLowerCase(form.getName()));
+        form.setBarcode(StringUtil.toLowerCase(form.getBarcode()));
+        form.setBrand(StringUtil.toLowerCase(form.getBrand()));
+        form.setCategory(StringUtil.toLowerCase(form.getCategory()));
+    }
+
     public static void normalizeInventory(InventoryForm form) {
         form.setBarcode(StringUtil.toLowerCase(form.getBarcode()));
     }

@@ -3,7 +3,9 @@ package com.increff.pos.dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.increff.pos.model.data.ProductData;
 import com.increff.pos.model.data.UploadProgressData;
+import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.model.form.ProductForm;
+import com.increff.pos.model.form.ProductSearchForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductDto {
@@ -68,6 +71,20 @@ public class ProductDto {
             list2.add(ConversionUtil.getProductData(p, b.getBrand(), b.getCategory()));
         }
         return list2;
+    }
+
+    public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
+        BrandForm brandForm = ConversionUtil.getBrandFormFromProductSearchForm(form);
+        List<BrandPojo> brandMasterPojoList = brandService.searchByBrandCategory(brandForm.getBrand(), brandForm.getCategory());
+        List<Integer> brandIds = brandMasterPojoList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
+        List<ProductPojo> list = productService.searchProductData(form).stream()
+                .filter(o -> (brandIds.contains(o.getBrandId()))).collect(Collectors.toList());
+        List<ProductData> filteredProductList = new ArrayList<>();
+        for (ProductPojo productPojo : list) {
+            BrandPojo b = brandService.get(productPojo.getBrandId());
+            filteredProductList.add(ConversionUtil.getProductData(productPojo, b.getBrand(), b.getCategory()));
+        }
+        return filteredProductList;
     }
 
     public ProductData update(Integer id, ProductForm form) throws ApiException {

@@ -143,4 +143,11 @@ public class ConversionUtil {
         data.setId(user.getId());
         return data;
     }
+
+    public static BrandForm getBrandFormFromProductSearchForm(ProductSearchForm form) {
+        BrandForm brandForm = new BrandForm();
+        brandForm.setBrand(form.getBrand());
+        brandForm.setCategory(form.getCategory());
+        return brandForm;
+    }
 }
