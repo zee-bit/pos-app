@@ -75,16 +75,11 @@ public class InventoryDto {
         );
     }
 
-    public UploadProgressData addInventoryFromFile(FileReader file) {
+    public UploadProgressData addInventoryFromFile(FileReader file) throws ApiException {
         UploadProgressData progress = new UploadProgressData();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            List<InventoryForm> formList = new CsvToBeanBuilder(file)
-                    .withSeparator('\t')
-                    .withType(InventoryForm.class)
-                    .build()
-                    .parse();
-
+            List<InventoryForm> formList = new CsvToBeanBuilder(file).withSeparator('\t').withType(InventoryForm.class).build().parse();
             progress.setTotalCount(formList.size());
             for (InventoryForm form : formList) {
                 try {
@@ -92,16 +87,13 @@ public class InventoryDto {
                     progress.setSuccessCount(progress.getSuccessCount() + 1);
                 } catch (ApiException e) {
                     progress.setErrorCount(progress.getErrorCount() + 1);
-                    String errorMsg = mapper.writeValueAsString(form) + " :: " + e.getMessage();
-                    progress.getErrorMessages().add(errorMsg);
+                    progress.getErrorMessages().add(mapper.writeValueAsString(form) + " :: " + e.getMessage());
                 }
             }
             return progress;
         } catch (Exception e) {
-            progress.setErrorCount(progress.getErrorCount() + 1);
-            progress.getErrorMessages().add(e.getMessage());
+            throw new ApiException(e.getMessage());
         }
-        return progress;
     }
 
     public void validateFields(InventoryForm form) throws ApiException {

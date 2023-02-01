@@ -95,16 +95,11 @@ public class ProductDto {
         );
     }
 
-    public UploadProgressData addProductFromFile(FileReader file) {
+    public UploadProgressData addProductFromFile(FileReader file) throws ApiException {
         UploadProgressData progress = new UploadProgressData();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            List<ProductForm> formList = new CsvToBeanBuilder(file)
-                    .withSeparator('\t')
-                    .withType(ProductForm.class)
-                    .build()
-                    .parse();
-
+            List<ProductForm> formList = new CsvToBeanBuilder(file).withSeparator('\t').withType(ProductForm.class).build().parse();
             progress.setTotalCount(formList.size());
             for (ProductForm form : formList) {
                 try {
@@ -112,16 +107,13 @@ public class ProductDto {
                     progress.setSuccessCount(progress.getSuccessCount() + 1);
                 } catch (ApiException e) {
                     progress.setErrorCount(progress.getErrorCount() + 1);
-                    String errorMsg = mapper.writeValueAsString(form) + " :: " + e.getMessage();
-                    progress.getErrorMessages().add(errorMsg);
+                    progress.getErrorMessages().add(mapper.writeValueAsString(form) + " :: " + e.getMessage());
                 }
             }
             return progress;
         } catch (Exception e) {
-            progress.setErrorCount(progress.getErrorCount() + 1);
-            progress.getErrorMessages().add(e.getMessage());
+            throw new ApiException(e.getMessage());
         }
-        return progress;
     }
 
     public void validateFields(ProductForm form) throws ApiException {

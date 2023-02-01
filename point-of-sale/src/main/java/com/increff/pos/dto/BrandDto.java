@@ -11,6 +11,8 @@ import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ConversionUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.CsvToBeanFilter;
+import com.opencsv.enums.CSVReaderNullFieldIndicator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -59,16 +61,11 @@ public class BrandDto {
         return ConversionUtil.getBrandData(service.update(id, b));
     }
 
-    public UploadProgressData addBrandCategoryFromFile(FileReader file) {
+    public UploadProgressData addBrandCategoryFromFile(FileReader file) throws ApiException {
         UploadProgressData progress = new UploadProgressData();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            List<BrandForm> formList = new CsvToBeanBuilder(file)
-                    .withSeparator('\t')
-                    .withType(BrandForm.class)
-                    .build()
-                    .parse();
-
+            List<BrandForm> formList = new CsvToBeanBuilder(file).withSeparator('\t').withType(BrandForm.class).build().parse();
             progress.setTotalCount(formList.size());
             for (BrandForm form : formList) {
                 try {
@@ -76,16 +73,13 @@ public class BrandDto {
                     progress.setSuccessCount(progress.getSuccessCount() + 1);
                 } catch (ApiException e) {
                     progress.setErrorCount(progress.getErrorCount() + 1);
-                    String errorMsg = mapper.writeValueAsString(form) + " :: " + e.getMessage();
-                    progress.getErrorMessages().add(errorMsg);
+                    progress.getErrorMessages().add(mapper.writeValueAsString(form) + " :: " + e.getMessage());
                 }
             }
             return progress;
         } catch (Exception e) {
-            progress.setErrorCount(progress.getErrorCount() + 1);
-            progress.getErrorMessages().add(e.getMessage());
+            throw new ApiException(e.getMessage());
         }
-        return progress;
     }
 
     public void validateFields(BrandForm form) throws ApiException {

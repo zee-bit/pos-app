@@ -54,6 +54,7 @@ point-of-sale/errorFiles/
 point-of-sale/fileUploads/
 point-of-sale/invoiceFiles/
 point-of-sale/testFiles/
+point-of-sale/tsvTypes/
 point-of-sale/log4j.properties
 point-of-sale/pos.properties
 point-of-sale/.idea
