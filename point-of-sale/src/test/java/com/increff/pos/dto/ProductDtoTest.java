@@ -175,7 +175,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void addProductFromFile() throws IOException {
+    public void addProductFromFile() throws IOException, ApiException {
         FileReader file = new FileReader("testFiles/product.tsv");
         UploadProgressData uploadProgressData = productDto.addProductFromFile(file);
         assertEquals((Integer) 4, uploadProgressData.getTotalCount());

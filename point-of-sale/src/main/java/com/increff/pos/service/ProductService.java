@@ -44,7 +44,6 @@ public class ProductService {
     }
 
     public List<ProductPojo> searchProductData(ProductSearchForm f) {
-        NormalizeUtil.normalizeProductSearch(f);
         return dao.searchProductData(f.getBarcode(), f.getName());
     }
 

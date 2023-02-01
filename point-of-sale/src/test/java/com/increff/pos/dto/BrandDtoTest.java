@@ -104,7 +104,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void addBrandFromFile() throws IOException {
+    public void addBrandFromFile() throws IOException, ApiException {
         FileReader file = new FileReader("testFiles/brand.tsv");
         UploadProgressData uploadProgressData = brandDto.addBrandCategoryFromFile(file);
         assertEquals((Integer) 3, uploadProgressData.getTotalCount());

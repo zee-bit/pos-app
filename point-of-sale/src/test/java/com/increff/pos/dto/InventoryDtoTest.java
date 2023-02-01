@@ -92,7 +92,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void addBrandFromFile() throws IOException {
+    public void addBrandFromFile() throws IOException, ApiException {
         FileReader file = new FileReader("testFiles/inventory.tsv");
         UploadProgressData uploadProgressData = inventoryDto.addInventoryFromFile(file);
         assertEquals((Integer) 2, uploadProgressData.getTotalCount());

@@ -71,6 +71,7 @@ public class ProductDto {
     }
 
     public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
+        NormalizeUtil.normalizeProductSearch(form);
         BrandForm brandForm = ConversionUtil.getBrandFormFromProductSearchForm(form);
         List<BrandPojo> brandMasterPojoList = brandService.searchByBrandCategory(brandForm.getBrand(), brandForm.getCategory());
         List<Integer> brandIds = brandMasterPojoList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
