@@ -105,7 +105,7 @@ function addDataToBarcodeDropdown(data, formId) {
 	}
   }
 
-function displayCreateOrderItems(orderItems) {
+function displayCreateOrderItems(orderItems, total = 0) {
     var $tbody = $('#order-item-table').find('tbody');
     $tbody.empty();
 
@@ -155,6 +155,7 @@ function displayCreateOrderItems(orderItems) {
 //        + '</tr>';
         $tbody.append(row);
     }
+    $('#add-grand-total').text('₹' + total.toFixed(2));
 }
 
 //UI DISPLAY METHODS
@@ -178,25 +179,31 @@ function addItem(item) {
   }
 }
 
+function calculateTotalPrice() {
+    let total = 0;
+    orderItems.forEach(item => total += item.sellingPrice * item.quantity);
+    return total;
+}
+
 function deleteOrderItem(barcode) {
     const index = orderItems.findIndex((it) => it.barcode === barcode.toString());
     if (index == -1) return;
     orderItems.splice(index, 1);
-    displayCreateOrderItems(orderItems);
+    displayCreateOrderItems(orderItems, calculateTotalPrice());
 }
 
 function addOrderItem(event) {
     event.preventDefault();
     const item = getCurrentOrderItem();
     addItem(item);
-    displayCreateOrderItems(orderItems);
+    displayCreateOrderItems(orderItems, calculateTotalPrice());
     $('#order-item-form').trigger("reset");
 }
 
 function addEditOrderItem() {
   const item = getCurrentEditOrderItem();
   addItem(item);
-  displayEditOrder(orderItems);
+  displayEditOrder(orderItems, calculateTotalPrice());
   $('#edit-order-item-form').trigger("reset");
 }
 
@@ -204,7 +211,7 @@ function deleteEditOrderItem(barcode) {
   const index = orderItems.findIndex((it) => it.barcode === barcode.toString());
   if (index == -1) return;
   orderItems.splice(index, 1);
-  displayEditOrder(orderItems);
+  displayEditOrder(orderItems, calculateTotalPrice());
 }
 
 function displayOrderList(data){
@@ -235,7 +242,7 @@ function displayOrderList(data){
 	}
 }
 
-function displayEditOrder(data) {
+function displayEditOrder(data, total = 0) {
   // const orderId = data.id;
   // const orderItems = data.orderItems;
 
@@ -297,6 +304,7 @@ function displayEditOrder(data) {
                `;
     $orderItemsTable.find("tbody").append(row);
   }
+  $('#edit-grand-total').text('₹' + total.toFixed(2));
 }
 
 function displayEditOrderModal(id){
@@ -309,7 +317,7 @@ function displayEditOrderModal(id){
         $("#order-edit-modal").modal("toggle");
         $("#order-edit-modal input[name=id]").val(id);
         populateBarcodeDropdown("#edit-order-item-form");
-        displayEditOrder(orderItems);
+        displayEditOrder(orderItems, calculateTotalPrice());
 	   },
 	   error: handleAjaxError
 	});	
