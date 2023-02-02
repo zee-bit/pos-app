@@ -385,6 +385,8 @@ function onQuantityChanged(barcode) {
   if (index == -1) return;
   const newQuantity = $(`#order-item-${barcode}`).val();
   orderItems[index].quantity = Number.parseInt(newQuantity);
+  $('#add-grand-total').text('₹' + calculateTotalPrice().toFixed(2));
+  $('#edit-grand-total').text('₹' + calculateTotalPrice().toFixed(2));
 }
 
 function onSellingPriceChanged(barcode) {
@@ -392,6 +394,8 @@ function onSellingPriceChanged(barcode) {
   if (index == -1) return;
   const newSellingPrice = $(`#order-item-sp-${barcode}`).val();
   orderItems[index].sellingPrice = Number.parseFloat(newSellingPrice);
+  $('#add-grand-total').text('₹' + calculateTotalPrice().toFixed(2));
+  $('#edit-grand-total').text('₹' + calculateTotalPrice().toFixed(2));
 }
 
 function getCurrentEditOrderItem() {

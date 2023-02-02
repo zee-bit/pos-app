@@ -49,6 +49,7 @@ public class NormalizeUtil {
 
     public static void normalizeOrderItem(List<OrderItemForm> orderItemFormList) {
         for (OrderItemForm orderItemForm : orderItemFormList) {
+            orderItemForm.setSellingPrice(normalizeDouble(orderItemForm.getSellingPrice()));
             orderItemForm.setBarcode(StringUtil.toLowerCase(orderItemForm.getBarcode()));
         }
     }
