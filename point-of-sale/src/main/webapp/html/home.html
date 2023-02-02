@@ -14,58 +14,20 @@
 	<h1>Point of Sale (PoS)</h1>
 </div>
 
-<!--<div class="container mh-100 border w-50 my-5 h-auto">-->
-<!--	<div class="row justify-content-center my-5">-->
-<!--		<a th:href="@{/ui/brand}" title="Brands">-->
-<!--			<button class="btn btn-primary btn-lg">-->
-<!--				Brands-->
-<!--			</button>-->
-<!--		</a>-->
-<!--	</div>-->
-<!--	<div class="row justify-content-center my-5">-->
-<!--		<a th:href="@{/ui/product}" title="Products">-->
-<!--			<button class="btn btn-primary btn-lg">-->
-<!--				Products-->
-<!--			</button>-->
-<!--		</a>-->
-<!--	</div>-->
-<!--	<div class="row justify-content-center my-5">-->
-<!--		<a th:href="@{/ui/inventory}" title="Inventory">-->
-<!--			<button class="btn btn-primary btn-lg">-->
-<!--				Inventory-->
-<!--			</button>-->
-<!--		</a>-->
-<!--	</div>-->
-<!--	<div class="row justify-content-center my-5">-->
-<!--		<a th:href="@{/ui/order}" title="Orders">-->
-<!--			<button class="btn btn-primary btn-lg">-->
-<!--				Orders-->
-<!--			</button>-->
-<!--		</a>-->
-<!--	</div>-->
-<!--	<div class="row justify-content-center my-5">-->
-<!--		<a th:href="@{/ui/reports}" title="Reports">-->
-<!--			<button class="btn btn-primary btn-lg">-->
-<!--				Reports-->
-<!--			</button>-->
-<!--		</a>-->
-<!--	</div>-->
-<!--</div>-->
-<!-- <div class="container"> -->
 	<div class="row justify-content-around my-5">
-		<div class="col text-center m-3">
+		<div class="col text-center m-3 border p-3">
 			<a th:href="@{/ui/brands}">
 				<img style="width:12rem;" alt="Brand image" th:src="@{/static/home/brand-image.png}">
 				<h5>Brands</h5>
 			</a>
 		</div>
-		<div class="col text-center m-3">
+		<div class="col text-center m-3 border p-3">
 			<a th:href="@{/ui/products}">
 				<img style="width:12rem;" alt="Product image" th:src="@{/static/home/delivery-box.png}">
 				<h5>Products</h5>
 			</a>
 		</div>
-		<div class="col text-center m-3">
+		<div class="col text-center m-3 border p-3">
 			<a th:href="@{/ui/inventory}">
 				<img style="width:12rem;" alt="Inventory image" th:src="@{/static/home/inventory.png}">
 				<h5>Inventory</h5>
@@ -73,19 +35,19 @@
 		</div>
 	</div>
 	<div class="row justify-content-around mt-3">
-		<div class="col text-center m-3">
+		<div class="col text-center m-3 border p-3">
 			<a th:href="@{/ui/orders}">
 				<img style="width:12rem;" alt="Order image" th:src="@{/static/home/shopping-cart.png}">
 				<h5>Orders</h5>
 			</a>
 		</div>
-		<div class="col text-center m-3">
+		<div class="col text-center m-3 border p-3">
 			<a th:href="@{/ui/reports}">
 				<img style="width:12rem;" alt="Reports image" th:src="@{/static/home/report.png}">
 				<h5>Reports</h5>
 			</a>
 		</div>
-		<div class="col text-center m-3" th:if="${info.getRole() == 'supervisor'}">
+		<div class="col text-center m-3 border p-3" th:if="${info.getRole() == 'supervisor'}">
 			<a th:href="@{/ui/users}">
 				<img style="width:12rem;" alt="Admin image" th:src="@{/static/home/admin.png}">
 				<h5>Users</h5>
@@ -98,7 +60,10 @@
 </div> <!-- Container end-->
 
 <footer th:replace="snippets.html :: name_footer"></footer>
-<script>$('#nav-home').addClass('active')</script>
+<script>
+	$('#nav-home').addClass('active');
+	$('#hide-home').hide();
+</script>
 
 </body>	
 

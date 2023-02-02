@@ -226,7 +226,7 @@ function displayOrderList(data){
         buttonHtml += '<button class="btn btn-outline-dark px-4 mx-2" data-toggle="tooltip" title="Details" onclick="displayOrderDetails(' + b.id + ')"><i class="fa fa-info fa-lg"></i></button>'
         buttonHtml += '<button class="btn btn-outline-dark px-4 mx-2" data-toggle="tooltip" title="Download Invoice" onclick="downloadInvoice(' + b.id + ')"><i class="fa fa-file-invoice fa-lg"></i></button>'
             var row = '<tr>'
-            + '<td>&nbsp;</td>'
+            + '<td>' + b.id + '</td>'
             + '<td>' + orderDateStr + '</td>'
             + '<td class="text-right">' + numberWithCommas(b.billAmount.toFixed(2)) + '</td>'
             + '<td>' + buttonHtml + '</td>'

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="baseUrl" th:attr="content=${baseUrl}">
 <meta name="role" th:attr="content=${info.getRole()}">
+<title>PoS app (Zeeshan)</title>
 
 <script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
 
@@ -50,7 +51,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav" id="hide-home">
       <li class="nav-item" id="nav-home">
         <a class="nav-link" th:href="@{/ui/home}">Home</a>
       </li>
