@@ -32,7 +32,7 @@ public class AdminApiDto {
             throw new ApiException("Password cannot be empty!");
         if (StringUtil.isEmpty(userForm.getConfirmPassword()))
             throw new ApiException("Confirm password cannot be empty!");
-        if (userForm.getPassword() != userForm.getConfirmPassword())
+        if (!userForm.getPassword().equals(userForm.getConfirmPassword()))
             throw new ApiException("Password does not match!");
     }
 

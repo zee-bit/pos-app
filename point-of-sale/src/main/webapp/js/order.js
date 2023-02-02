@@ -344,6 +344,7 @@ function displayAddModal() {
     orderItems = [];
     $('#order-item-table tbody tr').remove();
 	$('#add-order-modal').modal('toggle');
+	$('#add-grand-total').text('₹0.00');
 	populateBarcodeDropdown("#order-item-form");
 }
 
