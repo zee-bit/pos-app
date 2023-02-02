@@ -21,14 +21,12 @@ public class InvoiceApiController {
     @RequestMapping(value = "", consumes = "application/json")
     public String encodeOrderDetails(@RequestBody OrderDetailData orderDetails) throws Exception {
 
-        System.out.println(orderDetails);
         XMLUtil.createXml(orderDetails);
         PDFUtil.createPDF();
 
         byte[] bytes = FileUtils.readFileToByteArray(new File("bill.pdf"));
         String base64PdfStr = Base64.getEncoder().encodeToString(bytes);
 
-        System.out.println("Sending: " + base64PdfStr);
         return base64PdfStr;
     }
 

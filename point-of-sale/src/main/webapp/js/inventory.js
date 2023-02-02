@@ -131,7 +131,6 @@ function processData(){
             $.notify("Successfully updated inventory items!", 'success');
 		},
 		error: function(res) {
-			console.log("error: "+ res.responseText);
 			$.notify.defaults( {clickToHide:true,autoHide:false} );
 			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify(res.responseJSON.message, 'error');

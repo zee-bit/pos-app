@@ -133,7 +133,6 @@ function processData(){
 			$.notify("Successfully uploaded all valid brand-categories!", 'success');
 		},
 		error: function(res) {
-			console.log(res.responseText);
 			$.notify.defaults( {clickToHide:true,autoHide:false} );
 			$('.notifyjs-wrapper').trigger('notify-hide');
 			$.notify(res.responseJSON.message, 'error');

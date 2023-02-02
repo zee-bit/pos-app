@@ -19,7 +19,6 @@ function getRole(){
 function updateOrder(event){
     var ok = true;
 	const data = orderItems.map((it) => {
-	    console.log(it.quantity);
         if(isNaN(it.quantity)) {
             $.notify.defaults( {clickToHide:true,autoHide:false} );
             $('.notifyjs-wrapper').trigger('notify-hide');
@@ -87,7 +86,6 @@ function populateBarcodeDropdown(formId) {
 
 function addDataToBarcodeDropdown(data, formId) {
 	var $barcode = $(`${formId} select[name=barcode]`);
-	console.log($barcode);
 	$barcode.empty();
 
 	var barcodeDefaultOption = '<option value="">Select a barcode</option>';
@@ -142,17 +140,6 @@ function displayCreateOrderItems(orderItems, total = 0) {
              </tr>
            `;
 
-//        var buttonHtml = `<button class="btn btn-outline-danger px-4 mx-2" data-toggle="tooltip"
-//          title="Delete item" onclick="deleteOrderItem(\'${e.barcode}\')">
-//            <i class="fa fa-trash fa-lg"></i>
-//          </button>`
-//        var row = '<tr>'
-//        + '<td>&nbsp;</td>'
-//        + '<td>' + e.barcode + '</td>'
-//        + '<td>' + numberWithCommas(e.quantity) + '</td>'
-//        + '<td class="text-right">' + numberWithCommas(e.sellingPrice.toFixed(2)) + '</td>'
-//        + '<td>' + buttonHtml + '</td>'
-//        + '</tr>';
         $tbody.append(row);
     }
     $('#add-grand-total').text('₹' + total.toFixed(2));
@@ -252,26 +239,6 @@ function displayEditOrder(data, total = 0) {
 
   for (var i in data) {
     var e = data[i];
-//    const orderItem = orderItems[i];
-//    const barcode = orderItem.barcode;
-//    const quantity = orderItem.quantity;
-//    const sellingPrice = orderItem.sellingPrice;
-//    const buttonHtml = `<button class="btn btn-outline-danger px-4 mx-2" data-toggle="tooltip"
-//                         title="Delete item" onclick="deleteOrderItem(\'' + e.barcode + '\')">
-//                           <i class="fa fa-trash fa-lg"></i>
-//                         </button>`
-//
-//    const row = '<tr>'
-//        + '<td>&nbsp;</td>'
-//        + '<td>' + barcode + '</td>'
-////        + '<td>' + quantity + '</td>'
-//        + '<td><input type="number" class="form-control" name="quantity" id="inputQuantity" value="' + quantity + '" required /></td>'
-//        + '<td><input type="number" class="form-control" name="sellingPrice" id="inputSellingPrice" value="' + sellingPrice.toFixed(2) + '" required /></td>'
-////        + '<td>' + sellingPrice.toFixed(2) + '</td>'
-//        + '<td>' + buttonHtml + '</td>'
-//        + '</tr>';
-//
-//    $orderItemsTable.find("tbody").append(row);
     const row = `
                  <tr>
                    <td>&nbsp;</td>
