@@ -162,7 +162,13 @@ function addItem(item) {
   if (index == -1) {
     orderItems.push(item);
   } else {
-    orderItems[index].quantity += item.quantity;
+    if (orderItems[index].sellingPrice === item.sellingPrice) {
+        orderItems[index].quantity += item.quantity;
+    } else {
+        $.notify.defaults( {clickToHide:true, autoHide:false} );
+        $('.notifyjs-wrapper').trigger('notify-hide');
+        $.notify("An existing item with different SP already exists", "error");
+    }
   }
 }
 
