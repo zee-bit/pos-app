@@ -110,10 +110,13 @@ public class OrderDto {
 
     @Transactional(rollbackFor = ApiException.class)
     public List<OrderItemPojo> updateOrder(Integer orderId, List<OrderItemForm> orderItemForms) throws ApiException {
+        OrderPojo orderPojo = orderService.getById(orderId);
+        if (orderPojo.getIsInvoiceCreated()) {
+            throw new ApiException("Order cannot be edited if invoice is already generated.");
+        }
         validateFields(orderItemForms);
         NormalizeUtil.normalizeOrderItem(orderItemForms);
         revertInventory(orderId);
-        OrderPojo orderPojo = orderService.getById(orderId);
         orderItemService.deleteByOrderId(orderId);
 
         List<OrderItemPojo> orderItemPojolist = new ArrayList<>();
