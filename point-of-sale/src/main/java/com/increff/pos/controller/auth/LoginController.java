@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +46,8 @@ public class LoginController extends AbstractUiController {
 			info.setMessage("Email does not exists. Signup first");
 			return mav("login.html");
 		}
-		boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		boolean authenticated = (p != null && encoder.matches(f.getPassword(), p.getPassword()));
 		if (!authenticated) {
 			info.setMessage("Password does not match. Try again!");
 			return mav("login.html");

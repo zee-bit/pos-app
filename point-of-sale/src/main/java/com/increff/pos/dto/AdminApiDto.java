@@ -8,7 +8,9 @@ import com.increff.pos.service.exception.ApiException;
 import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,9 @@ public class AdminApiDto {
 
     public void add(UserForm userForm) throws ApiException {
         validateForm(userForm);
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        userForm.setPassword(encoder.encode(userForm.getPassword()));
+        userForm.setConfirmPassword(encoder.encode(userForm.getConfirmPassword()));
         UserPojo user = ConversionUtil.getUserPojoFromForm(userForm);
         service.add(user);
     }
