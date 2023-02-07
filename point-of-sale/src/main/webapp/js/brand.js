@@ -12,28 +12,20 @@ function getRole(){
 //BUTTON ACTIONS
 function addBrand(event){
 	//Set the values to update
+	event.preventDefault();
 	var $form = $("#brand-form");
 	var json = toJson($form);
 	var url = getBrandUrl();
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		getBrandList();
-			$form.trigger("reset");
-			$('#add-brand-modal').modal('toggle');
-			$('.notifyjs-wrapper').trigger('notify-hide');
-			$.notify("Brand successfully created!", 'success');
-	   },
-	   error: handleAjaxError
-	});
+    makeAjaxCall(url, 'POST', json, (res) => addBrandCallback());
+}
 
-	return false;
+function addBrandCallback() {
+    getBrandList();
+    $form.trigger("reset");
+    $('#add-brand-modal').modal('toggle');
+    $('.notifyjs-wrapper').trigger('notify-hide');
+    $.notify("Brand successfully created!", 'success');
 }
 
 function updateBrand(event){
@@ -45,36 +37,19 @@ function updateBrand(event){
 	var $form = $("#brand-edit-form");
 	var json = toJson($form);
 
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		getBrandList();
-	   		$('.notifyjs-wrapper').trigger('notify-hide');
-	   		$.notify("Brand successfully edited!", 'success');
-	   		$('#edit-brand-modal').modal('toggle');
-	   },
-	   error: handleAjaxError
-	});
-
-	return false;
+    makeAjaxCall(url, 'PUT', json, (res) => updateBrandCallback(res));
 }
 
+function updateBrandCallback(data) {
+    getBrandList();
+    $('.notifyjs-wrapper').trigger('notify-hide');
+    $.notify("Brand successfully edited!", 'success');
+    $('#edit-brand-modal').modal('toggle');
+}
 
 function getBrandList(){
 	var url = getBrandUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayBrandList(data);
-	   },
-	   error: handleAjaxError
-	});
+    makeAjaxCall(url, 'GET', {}, (res) => displayBrandList(res));
 }
 
 function filterBrand() {
@@ -82,18 +57,7 @@ function filterBrand() {
     var json = toJson($form);
     var url = getBrandUrl() + "/search";
 
-    $.ajax({
-       url: url,
-       type: 'POST',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displayBrandList(response);
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'POST', json, (res) => displayBrandList(res));
 }
 
 // FILE UPLOAD METHODS
@@ -110,86 +74,42 @@ function processData(){
 	    $.notify('No file selected', 'error');
 	    return;
 	}
-	// readFileData(file, readFileDataCallback);
+
 	url = "/pos/upload/file"
 	var data = new FormData();
 	data.append("temp", file);
 	data.append("type", "brand");
 
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: data,
-		contentType: false,
-		processData: false,
-		success: function(res) {
-			$("#rowCount").text(res.totalCount);
-			$("#processCount").text(res.successCount);
-			$("#errorCount").text(res.errorCount);
-			if (res.errorCount > 0) {
-			    $('#download-errors').show();
-			}
-			$('.notifyjs-wrapper').trigger('notify-hide');
-			$.notify("Successfully uploaded all valid brand-categories!", 'success');
-		},
-		error: function(res) {
-			$.notify.defaults( {clickToHide:true,autoHide:false} );
-			$('.notifyjs-wrapper').trigger('notify-hide');
-			$.notify(res.responseJSON.message, 'error');
-		}
-	})
+    makeAjaxCall(
+        url, 'POST', data,
+        (res) => processDataSuccessCallback(res),
+        (err) => processDataErrorCallback(err),
+        {
+            contentType: false,
+            processData: false
+        });
 }
 
-function readFileDataCallback(results){
-	fileData = results.data;
-	uploadRows();
+function processDataSuccessCallback(res) {
+    $("#rowCount").text(res.totalCount);
+    $("#processCount").text(res.successCount);
+    $("#errorCount").text(res.errorCount);
+    if (res.errorCount > 0) {
+        $('#download-errors').show();
+    }
+    $('.notifyjs-wrapper').trigger('notify-hide');
+    $.notify("Successfully uploaded all valid brand-categories!", 'success');
 }
 
-function uploadRows(){
-	//Update progress
-	updateUploadDialog();
-	//If everything processed then return
-	if(processCount==fileData.length){
-		return;
-	}
-	
-	//Process next row
-	var row = fileData[processCount];
-	processCount++;
-	
-	var json = JSON.stringify(row);
-	var url = getBrandUrl();
-
-	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		uploadRows();  
-	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRows();
-	   }
-	});
-
+function processDataErrorCallback(error) {
+    $.notify.defaults( {clickToHide:true,autoHide:false} );
+    $('.notifyjs-wrapper').trigger('notify-hide');
+    $.notify(error.responseJSON.message, 'error');
 }
 
 function downloadErrors(){
 	var url = "/pos/download/error";
-    $.ajax({
-       url: url,
-       type: 'GET',
-       success: function(data) {
-            writeFileData(data);
-       },
-       error: handleAjaxError
-    });
+	makeAjaxCall(url, 'GET', {}, (res) => writeFileData(res));
 }
 
 //UI DISPLAY METHODS
@@ -199,7 +119,6 @@ function displayBrandList(data){
 	$tbody.empty();
 	for(var i in data){
 		var b = data[i];
-//		var buttonHtml = '<button onclick="deleteBrand(' + b.id + ')">delete</button>'
 		var buttonHtml = '';
 		if(getRole() === "supervisor")
 			buttonHtml = '<td><button class="btn btn-outline-dark px-4 mx-2" data-toggle="tooltip" title="Edit" onclick="displayEditBrand(' + b.id + ')"><i class="fa fa-edit fa-lg"></i></button></td>'
@@ -215,14 +134,7 @@ function displayBrandList(data){
 
 function displayEditBrand(id){
 	var url = getBrandUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayBrand(data);
-	   },
-	   error: handleAjaxError
-	});	
+	makeAjaxCall(url, 'GET', {}, (res) => displayBrand(res));
 }
 
 function resetUploadDialog(){
