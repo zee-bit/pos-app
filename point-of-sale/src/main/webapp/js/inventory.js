@@ -16,21 +16,10 @@ function addInventory(event){
 	var json = toJson($form);
 	var url = getInventoryUrl();
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		getInventoryList();
-			$form.trigger("reset");
-	   },
-	   error: handleAjaxError
-	});
-
-	return false;
+    makeAjaxCall(url, 'POST', json, (res) => {
+        getInventoryList();
+        $form.trigger("reset");
+    });
 }
 
 function filterInventory() {
@@ -38,22 +27,12 @@ function filterInventory() {
     var json = toJson($form);
     var url = getInventoryUrl() + "/search";
 
-    $.ajax({
-       url: url,
-       type: 'POST',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displayInventoryList(response);
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'POST', json, (res) => displayInventoryList(res));
 }
 
 function updateInventory(event){
 	//Get the ID
+	event.preventDefault();
 	var barcode = $("#inventory-edit-form input[name=barcode]").val();
 	var url = getInventoryUrl();
 
@@ -61,36 +40,18 @@ function updateInventory(event){
 	var $form = $("#inventory-edit-form");
 	var json = toJson($form);
 
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		getInventoryList();
-	   		$('#edit-inventory-modal').modal('toggle');
-	   		$('.notifyjs-wrapper').trigger('notify-hide');
-	   		$.notify("Successfully updated inventory!", 'success');
-	   },
-	   error: handleAjaxError
-	});
-
-	return false;
+    makeAjaxCall(url, 'PUT', json, (res) => {
+        getInventoryList();
+        $('#edit-inventory-modal').modal('toggle');
+        $('.notifyjs-wrapper').trigger('notify-hide');
+        $.notify("Successfully updated inventory!", 'success');
+    });
 }
 
 
 function getInventoryList(){
 	var url = getInventoryUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayInventoryList(data);
-	   },
-	   error: handleAjaxError
-	});
+	makeAjaxCall(url, 'GET', {}, (res) => displayInventoryList(res));
 }
 
 
@@ -108,20 +69,16 @@ function processData(){
         $.notify('No file selected', 'error');
         return;
     }
-	// readFileData(file, readFileDataCallback);
+
 	url = "/pos/upload/file"
 	var data = new FormData();
 	data.append("temp", file);
 	data.append("type", "inventory");
 
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: data,
-		contentType: false,
-		processData: false,
-		success: function(res) {
-			$("#rowCount").text(res.totalCount);
+    makeAjaxCall(
+        url, 'POST', data,
+        (res) => {
+            $("#rowCount").text(res.totalCount);
             $("#processCount").text(res.successCount);
             $("#errorCount").text(res.errorCount);
             if (res.errorCount > 0) {
@@ -129,65 +86,20 @@ function processData(){
             }
             $('.notifyjs-wrapper').trigger('notify-hide');
             $.notify("Successfully updated inventory items!", 'success');
-		},
-		error: function(res) {
-			$.notify.defaults( {clickToHide:true,autoHide:false} );
-			$('.notifyjs-wrapper').trigger('notify-hide');
-			$.notify(res.responseJSON.message, 'error');
-		}
-	})
-}
-
-function readFileDataCallback(results){
-	fileData = results.data;
-	uploadRows();
-}
-
-function uploadRows(){
-	//Update progress
-	updateUploadDialog();
-	//If everything processed then return
-	if(processCount==fileData.length){
-		return;
-	}
-	
-	//Process next row
-	var row = fileData[processCount];
-	processCount++;
-	
-	var json = JSON.stringify(row);
-	var url = getInventoryUrl();
-
-	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		uploadRows();  
-	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRows();
-	   }
-	});
-
+        },
+        (res) => {
+            $.notify.defaults( {clickToHide:true,autoHide:false} );
+            $('.notifyjs-wrapper').trigger('notify-hide');
+            $.notify(res.responseJSON.message, 'error');
+        }, {
+            contentType: false,
+            processData: false,
+        });
 }
 
 function downloadErrors(){
 	var url = "/pos/download/error";
-    $.ajax({
-       url: url,
-       type: 'GET',
-       success: function(data) {
-            writeFileData(data);
-       },
-       error: handleAjaxError
-    });
+	makeAjaxCall(url, 'GET', {}, (res) => writeFileData(res));
 }
 
 //UI DISPLAY METHODS
@@ -213,14 +125,7 @@ function displayInventoryList(data){
 
 function displayEditInventory(barcode){
 	var url = getInventoryUrl() + "/" + barcode;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayInventory(data);
-	   },
-	   error: handleAjaxError
-	});	
+	makeAjaxCall(url, 'GET', {}, (res) => displayInventory(res));
 }
 
 function resetUploadDialog(){

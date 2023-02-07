@@ -5,17 +5,7 @@ function getDailySalesReportUrl(){
 
 function filterSalesReport() {
     var url = getDailySalesReportUrl();
-    $.ajax({
-       url: url,
-       type: 'GET',
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displayDailySalesReport(response);
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'GET', {}, (res) => displayDailySalesReport(res));
 }
 
 function displayDailySalesReport(data) {

@@ -8,18 +8,7 @@ function filterSalesReport() {
     var json = toJson($form);
     var url = getSalesReportUrl();
 
-    $.ajax({
-       url: url,
-       type: 'POST',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displaySalesReport(response);
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'POST', json, (res) => displaySalesReport(res));
 }
 
 function displaySalesReport(data) {

@@ -8,18 +8,7 @@ function filterBrandReport() {
     var json = toJson($form);
     var url = getBrandReportUrl();
 
-    $.ajax({
-       url: url,
-       type: 'POST',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displayBrandReportList(response);
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'POST', json, (res) => displayBrandReportList(res));
 }
 
 //UI DISPLAY METHODS

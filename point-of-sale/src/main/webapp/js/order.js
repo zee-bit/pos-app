@@ -42,46 +42,23 @@ function updateOrder(event){
     const json = JSON.stringify(data);
     var id = $("#order-edit-modal input[name=id]").val();
     var url = getOrderUrl() + "/" + id;
-    $.ajax({
-       url: url,
-       type: 'PUT',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            $('#order-edit-modal').modal('toggle');
-            $('.notifyjs-wrapper').trigger('notify-hide');
-            $.notify("Order successfully edited!", 'success');
-            getOrderList();
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'PUT', json, (res) => {
+        $('#order-edit-modal').modal('toggle');
+        $('.notifyjs-wrapper').trigger('notify-hide');
+        $.notify("Order successfully edited!", 'success');
+        getOrderList();
+    })
 }
 
 
 function getOrderList(){
 	var url = getOrderUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayOrderList(data);
-	   },
-	   error: handleAjaxError
-	});
+	makeAjaxCall(url, 'GET', {}, (res) => displayOrderList(res));
 }
 
 function populateBarcodeDropdown(formId) {
     var url = getInventoryUrl();
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: function (data) {
-            addDataToBarcodeDropdown(data, formId)
-        },
-        error: handleAjaxError
-    });
+    makeAjaxCall(url, 'GET', {}, (res) => addDataToBarcodeDropdown(res, formId));
 }
 
 function addDataToBarcodeDropdown(data, formId) {
@@ -282,30 +259,18 @@ function displayEditOrder(data, total = 0) {
 
 function displayEditOrderModal(id){
 	var url = getOrderUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
+	makeAjaxCall(url, 'GET', {}, (data) => {
 	    orderItems = data.orderItems;
         $("#order-edit-modal").modal("toggle");
         $("#order-edit-modal input[name=id]").val(id);
         populateBarcodeDropdown("#edit-order-item-form");
         displayEditOrder(orderItems, calculateTotalPrice());
-	   },
-	   error: handleAjaxError
-	});	
+	});
 }
 
 function displayOrderDetails(id) {
   var url = getOrderUrl() + "/" + id;
-  $.ajax({
-    url: url,
-    type: "GET",
-    success: function (data) {
-      displayOrderDetailsInModal(data);
-    },
-    error: handleAjaxError,
-  });
+  makeAjaxCall(url, 'GET', {}, (res) => displayOrderDetailsInModal(res));
 }
 
 function displayOrderDetailsInModal(data) {
@@ -426,21 +391,11 @@ function placeNewOrder() {
 function placeOrder(json) {
   //Set the values to update
   const url = getOrderUrl();
-
-  $.ajax({
-    url: url,
-    type: 'POST',
-    data: json,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    success: function(response) {
+  makeAjaxCall(url, 'POST', json, (res) => {
       $('#add-order-modal').modal('toggle');
       $('.notifyjs-wrapper').trigger('notify-hide');
       $.notify("Order successfully placed!", 'success');
       getOrderList();
-    },
-    error: handleAjaxError,
   });
 
   return false;
@@ -451,14 +406,7 @@ function disableOrderEdit(id) {
     const url = getOrderUrl() + "/invoice/" + id;
 //    url = `${url}/invoice/${id}`;
 
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: function(response) {
-          getOrderList();
-        },
-        error: handleAjaxError,
-    });
+    makeAjaxCall(url, 'GET', {}, (res) => getOrderList());
 }
 
 function downloadInvoice(id) {

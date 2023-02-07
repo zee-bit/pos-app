@@ -5,14 +5,7 @@ function getUserUrl() {
 
 function getUserList() {
   const url = getUserUrl();
-  $.ajax({
-    url: url,
-    type: 'GET',
-    success: function (data) {
-      displayUserList(data);
-    },
-    error: handleAjaxError,
-  });
+  makeAjaxCall(url, 'GET', {}, (res) => displayUserList(res));
 }
 
 //UI DISPLAY METHODS

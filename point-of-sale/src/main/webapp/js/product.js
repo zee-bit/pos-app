@@ -30,24 +30,13 @@ function addProduct(event){
 	
 	var url = getProductUrl();
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		getProductList();
-			$form.trigger("reset");
-			$('#add-product-modal').modal('toggle');
-			$('.notifyjs-wrapper').trigger('notify-hide');
-			$.notify("Product successfully added!", 'success');
-	   },
-	   error: handleAjaxError
-	});
-
-	return false;
+    makeAjaxCall(url, 'POST', json, (res) => {
+        getProductList();
+        $form.trigger("reset");
+        $('#add-product-modal').modal('toggle');
+        $('.notifyjs-wrapper').trigger('notify-hide');
+        $.notify("Product successfully added!", 'success');
+    });
 }
 
 function filterProduct() {
@@ -55,18 +44,7 @@ function filterProduct() {
     var json = toJson($form);
     var url = getProductUrl() + "/search";
 
-    $.ajax({
-       url: url,
-       type: 'POST',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displayProductList(response);
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'POST', json, (res) => displayProductList(res));
 }
 
 function updateProduct(event){
@@ -83,21 +61,12 @@ function updateProduct(event){
     $form.append('<input type="hidden" name="brandCategory" value="' + brandCategoryJson.brandCategory + '" /> ');
 	var json = toJson($form);
 
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		getProductList();
-	   		$('#edit-product-modal').modal('toggle');
-	   		$('.notifyjs-wrapper').trigger('notify-hide');
-	   		$.notify("Product successfully edited!", 'success');
-	   },
-	   error: handleAjaxError
-	});
+    makeAjaxCall(url, 'PUT', json, (res) => {
+        getProductList();
+        $('#edit-product-modal').modal('toggle');
+        $('.notifyjs-wrapper').trigger('notify-hide');
+        $.notify("Product successfully edited!", 'success');
+    });
 
 	return false;
 }
@@ -105,14 +74,7 @@ function updateProduct(event){
 
 function getProductList(){
 	var url = getProductUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayProductList(data);
-	   },
-	   error: handleAjaxError
-	});
+	makeAjaxCall(url, 'GET', {}, (res) => displayProductList(res));
 }
 
 // FILE UPLOAD METHODS
@@ -135,78 +97,29 @@ function processData(){
 	data.append("temp", file);
 	data.append("type", "product");
 
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: data,
-		contentType: false,
-		processData: false,
-		success: function(res) {
-			$("#rowCount").text(res.totalCount);
+    makeAjaxCall(
+        url, 'POST', data,
+        (res) => {
+            $("#rowCount").text(res.totalCount);
             $("#processCount").text(res.successCount);
             $("#errorCount").text(res.errorCount);
             if (res.errorCount > 0) {
                 $('#download-errors').show();
             }
-		},
-		error: function(res) {
-			$.notify.defaults( {clickToHide:true,autoHide:false} );
-			$('.notifyjs-wrapper').trigger('notify-hide');
-			$.notify(res.responseJSON.message, 'error');
-		}
-	})
-}
-
-function readFileDataCallback(results){
-	fileData = results.data;
-	uploadRows();
-}
-
-function uploadRows(){
-	//Update progress
-	updateUploadDialog();
-	//If everything processed then return
-	if(processCount==fileData.length){
-		return;
-	}
-	
-	//Process next row
-	var row = fileData[processCount];
-	processCount++;
-	
-	var json = JSON.stringify(row);
-	var url = getProductUrl();
-
-	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		uploadRows();  
-	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRows();
-	   }
-	});
-
+        },
+        (res) => {
+            $.notify.defaults( {clickToHide:true,autoHide:false} );
+            $('.notifyjs-wrapper').trigger('notify-hide');
+            $.notify(res.responseJSON.message, 'error');
+        }, {
+            contentType: false,
+            processData: false,
+        });
 }
 
 function downloadErrors(){
 	var url = "/pos/download/error";
-    $.ajax({
-       url: url,
-       type: 'GET',
-       success: function(data) {
-            writeFileData(data);
-       },
-       error: handleAjaxError
-    });
+	makeAjaxCall(url, 'GET', {}, (res) => writeFileData(res));
 }
 
 
@@ -232,17 +145,12 @@ function addDataToBrandCategoryDropdown(data, formId) {
 
 function populateBrandCategoryDropDown(formType) {
 	var url = getBrandCategoryUrl();
-	$.ajax({
-	  url: url,
-	  type: "GET",
-	  success: function (data) {
+	makeAjaxCall(url, 'GET', {}, (data) => {
 	    if(formType === 'add-form') {
-		    addDataToBrandCategoryDropdown(data, "#product-form");
-		} else if(formType === 'edit-form') {
-		    addDataToBrandCategoryDropdown(data, "#product-edit-form");
+            addDataToBrandCategoryDropdown(data, "#product-form");
+        } else if(formType === 'edit-form') {
+            addDataToBrandCategoryDropdown(data, "#product-edit-form");
         }
-	  },
-	  error: handleAjaxError,
 	});
   }
 
@@ -274,14 +182,7 @@ function displayEditProduct(id){
 	var url = getProductUrl() + "/" + id;
 	populateBrandCategoryDropDown("edit-form");
 
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayProduct(data);
-	   },
-	   error: handleAjaxError
-	});	
+    makeAjaxCall(url, 'GET', {}, (res) => displayProduct(res));
 }
 
 function resetUploadDialog(){

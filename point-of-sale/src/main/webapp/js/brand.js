@@ -22,7 +22,7 @@ function addBrand(event){
 
 function addBrandCallback() {
     getBrandList();
-    $form.trigger("reset");
+    $("#brand-form").trigger("reset");
     $('#add-brand-modal').modal('toggle');
     $('.notifyjs-wrapper').trigger('notify-hide');
     $.notify("Brand successfully created!", 'success');

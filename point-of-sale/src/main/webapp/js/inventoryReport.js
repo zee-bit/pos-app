@@ -8,18 +8,7 @@ function filterInventoryReport() {
     var json = toJson($form);
     var url = getInventoryReportUrl();
 
-    $.ajax({
-       url: url,
-       type: 'POST',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displayInventoryReportList(response);
-       },
-       error: handleAjaxError
-    });
+    makeAjaxCall(url, 'POST', json, (res) => displayInventoryReportList(res));
 }
 
 //UI DISPLAY METHODS
